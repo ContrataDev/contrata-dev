@@ -1,0 +1,118 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: inter;
+  background-color: #0E1525;
+  color: #fff;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+/*frescura horizontal*/
+.horizontal {
+  flex-direction: row;
+  border-bottom: 1px solid #334155;
+  height: 61px;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  margin: 20px;
+}
+
+/*sidebar*/
+
+.sidebar {
+  width: 200px;
+  background-color: #0E1525;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #334155;
+}
+
+.sidebar .logo {
+  margin-bottom: 30px;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar li {
+  margin: 15px 0;
+  color: #797D89;
+  align-items: center;
+  display: flex;
+
+  iconify-icon {
+    margin-right: 5px;
+  }
+}
+
+/*meio*/
+
+.main-content {
+  flex: 1;
+  padding: 30px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status {
+  background-color: #1C2333;
+  height: 11.9vh;
+  padding: 10px;
+  margin: 20px 0px 20px 0px;
+  border-radius: 10px;
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/*cards*/
+
+.card {
+  background-color: #1C2333;
+  padding: 15px;
+  border-radius: 5px;
+  width: 300px;
+  color: white;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+
+  p {
+    margin: 3px;
+  }
+}
+
+.header-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.valor {
+  background: linear-gradient(to right, #52B087, #1D9B63);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.tech-icons {
+  margin-top: 8px;
+}

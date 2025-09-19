@@ -1,0 +1,119 @@
+* {
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #0E1525;
+  font-family: inter;
+  color: #fff;
+  padding: 20px;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.perfil-container {
+  width: 100%;
+}
+
+.voltar {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #9ca3af;
+  cursor: pointer;
+}
+
+.conteudo {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.col-esquerda {
+  flex: 1;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar {
+  width: 150px;
+  height: 150px;
+  background-color: #ccc;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.tecnologias {
+  background-color: #1C2333;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px 0;
+  width: 100%;
+  text-align: center;
+}
+
+.tech-icons {
+  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-editar {
+  background-color: #3f3f4641;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.col-direita {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.info-box {
+  background-color: #1C2333;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.info-box input {
+  width: 100%;
+  padding: 8px;
+  background-color: #2e3444;
+  border: none;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  color: #ccc;
+}
+
+.info-box input:focus {
+  outline: none;
+  border: 1px solid #0c0cd1d7;
+}
+
+.projeto-card {
+  background-color: #1C2333;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+/*classe oculta dos icones*/
+
+iconify-icon {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}

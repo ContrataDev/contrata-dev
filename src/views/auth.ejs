@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/auth.css" />
+    <title>Contrata-Dev</title>
+    <Script defer src="scripts/auth.js"></Script>
+    <script async src="https://kit.fontawesome.com/bbd511b314.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <section class="containerAll">
+        <div class="card loginActive">
+            <div class="login">
+                <div class="formLogin">
+                    <h2>Login</h2>
+                    <form action="/auth" method="post">
+                        <input type="email" name="email" placeholder="E-mail">
+                        <input type="password" name="password" autocomplete="current-password" placeholder="Senha">
+                        <button type="submit">Entrar</button>
+                    </form>
+                </div>
+                <div class="facaLogin">
+                    <h2>Já tem uma conta?</h2>
+                    <p>Entre agora</p>
+                    <button class="loginButton">Faça Login</button>
+                </div>
+            </div>
+            <div class="cadastro">
+                <div class="formCadastro">
+                    <h2>Cadastro</h2>
+                    <form method="post" action="/auth/register">
+                        <input type="text" name="name" placeholder="Nome Completo">
+                        <input type="email" name="email" placeholder="E-mail">
+                        <input type="password" name="password" placeholder="Senha">
+                        <input type="password" name="confirm-password" autocomplete="new-password"
+                            placeholder="Confirme Sua Senha">
+                        <section>
+                            <input type="radio" class="check" id="desenvolvedor" name="tipousuario"
+                                value="desenvolvedor">
+                            <label for="desenvolvedor">desenvolvedor</label>
+                        </section>
+                        <section>
+                            <input type="radio" class="check" id="contratant" name="tipousuario" value="contratant">
+                            <label for="contratant">contratante</label>
+                        </section>
+
+                        <button type="submit" id="cadastroButton ">Cadastro</button>
+                    </form>
+
+                </div>
+                <div class="facaCadastro">
+                    <h2>Não tem uma conta?</h2>
+                    <p>Crie uma e aproveite as oportunidades</p>
+                    <button class="cadastroButton">Cadastre-Se</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

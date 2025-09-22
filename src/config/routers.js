@@ -13,11 +13,13 @@ router.get("/", (_, res) => {
 });
 
 router.use("/auth", AuthRouter);
-router.use("/perfil",perfilRouter);
-router.use("/homeD",homeDRouter);
+router.use("/perfil", perfilRouter);
+router.use("/homeD", homeDRouter);
 router.use("/api", apiRouter);
-router.use("/homeE",homeERouter);
+router.use("/homeE", homeERouter);
 
-
+router.use((_, res) => {
+  res.status(404).render("404", { title: "404" });
+});
 
 export default router;

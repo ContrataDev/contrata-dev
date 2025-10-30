@@ -21,10 +21,11 @@
     "dotenv": "^17.2.1",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
-    "sequelize": "^6.37.7",
-    "sqlite3": "^5.1.7"
+    "mysql2": "^3.15.0",
+    "sequelize": "^6.37.7"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "sqlite3": "^5.1.7"
   }
 }

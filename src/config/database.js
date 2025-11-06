@@ -1,6 +1,8 @@
 import { Sequelize } from "sequelize";
 import path from "path";
 
+import "mysql2";
+
 const env = process.env.NODE_ENV || "development";
 
 let sequelize;

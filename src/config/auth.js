@@ -2,7 +2,7 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcrypt";
 
-import UserModel from "../models/user-model";
+import { getUserByEmail, getUserById } from "../controllers/user-controller.js";
 
 passport.use(
 	new LocalStrategy(
@@ -10,9 +10,7 @@ passport.use(
 
 		async function verify(email, password, cb) {
 			try {
-				const userDb = await UserModel.findOne({
-					where: { email: email },
-				});
+				const userDb = await getUserByEmail(email);
 
 				if (!userDb) {
 					return cb(null, false, {
@@ -45,7 +43,7 @@ passport.serializeUser(function (user, cb) {
 
 passport.deserializeUser(async function (id, cb) {
 	try {
-		const user = await UserModel.findByPk(id);
+		const user = await getUserById(id);
 
 		cb(null, user);
 	} catch (err) {

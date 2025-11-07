@@ -23,6 +23,7 @@
 		"express": "^5.1.0",
 		"express-session": "^1.18.2",
 		"mysql2": "^3.15.0",
+		"passport": "^0.7.0",
 		"passport-local": "^1.0.0",
 		"sequelize": "^6.37.7",
 		"sqlite3": "^5.1.7"

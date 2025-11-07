@@ -13,7 +13,7 @@ const __dirname = path.dirname(__filename);
 // Banco de dados
 import "./models/index.js";
 // import auth config
-import "./config/passport-config.js";
+import "./config/auth.js";
 
 // Servidor Web
 const app = express();

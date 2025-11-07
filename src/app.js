@@ -2,6 +2,7 @@
 import { fileURLToPath } from "url";
 import path from "path";
 import express from "express";
+import session from "express-session";
 import passport from "passport";
 
 import Routers from "./config/routers.js";
@@ -20,6 +21,14 @@ const app = express();
 // Middleware para parsing de JSON e dados de formulário
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(
+	session({
+		secret: process.env.SECRET,
+		resave: false,
+		saveUninitialized: false,
+	})
+);
 
 // Configuração do servidor web
 app.set("view engine", "ejs");

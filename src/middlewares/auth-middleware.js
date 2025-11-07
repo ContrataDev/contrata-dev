@@ -20,7 +20,10 @@ passport.use(
 					});
 				}
 
-				const isMatch = await bcrypt.compare(password, userDb.password);
+				const isMatch = await bcrypt.compare(
+					password,
+					userDb.hashed_password
+				);
 				if (!isMatch) {
 					return cb(null, false, {
 						message: "Email ou senha incorretos.",

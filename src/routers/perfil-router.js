@@ -4,12 +4,12 @@ const router = Router();
 
 // Página de perfil
 router.get("/", (req, res) => {
-  res.render("perfil", { title: "Meu Perfil" });
+	res.render("perfil", { title: "Meu Perfil" });
 });
 
 // Página de edição de perfil
 router.get("/edit", (req, res) => {
-  res.render("edit-perfil", { title: "Editar Perfil" });
+	res.render("edit-perfil", { title: "Editar Perfil" });
 });
 
 export default router;

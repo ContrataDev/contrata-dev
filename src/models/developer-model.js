@@ -5,14 +5,14 @@ import UserModel from "./user-model.js";
 
 class DeveloperModel extends UserModel {}
 DeveloperModel.init(
-  {
-    cpf: DataTypes.STRING,
-  },
-  {
-    sequelize,
-    modelName: "Developer",
-    tableName: "Developers",
-  }
+	{
+		cpf: DataTypes.STRING,
+	},
+	{
+		sequelize,
+		modelName: "Developer",
+		tableName: "Developers",
+	}
 );
 
 export default DeveloperModel;

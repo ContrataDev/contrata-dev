@@ -9,7 +9,7 @@ import homeERouter from "../routers/homeE-router.js";
 const router = Router();
 
 router.get("/", (_, res) => {
-  res.render("index", { title: "Página Inicial" });
+	res.render("index", { title: "Página Inicial" });
 });
 
 router.use("/auth", AuthRouter);
@@ -19,7 +19,7 @@ router.use("/api", apiRouter);
 router.use("/homeE", homeERouter);
 
 router.use((_, res) => {
-  res.status(404).render("404", { title: "404" });
+	res.status(404).render("404", { title: "404" });
 });
 
 export default router;

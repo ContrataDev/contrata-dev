@@ -1,11 +1,11 @@
 import { Router } from "express";
 
 import {
-  createContractor,
-  getAllContractors,
-  getContractorById,
-  updateContractor,
-  deleteContractor,
+	createContractor,
+	getAllContractors,
+	getContractorById,
+	updateContractor,
+	deleteContractor,
 } from "../../controllers/contractor-controller.js";
 
 const router = Router();

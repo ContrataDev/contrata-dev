@@ -20,7 +20,6 @@ export const createUser = async ({ name, email, password }) => {
 
 export const getUserByEmail = async (email) => {
 	const user = await UserModel.findOne({ where: { email: email } });
-	if (!user) throw new Error("Usuário não encontrado.");
 	return user;
 };
 

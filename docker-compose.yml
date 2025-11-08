@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+    webapp:
+        build: .
+        container_name: contrata-dev
+        ports:
+            - "8080:3000"
+        volumes:
+            - .:/usr/src/app
+        environment:
+            - NODE_ENV=production
+            - APP_NAME=Contrata-dev
+            - SECRET=SEU_SEGREDO_SUPER_SECRETO_AQUI
+            - DB_HOST=db
+            - DB_USER=server
+            - DB_PASSWORD=senha_forte
+            - DB_NAME=contrata-dev
+            - DB_PORT=3306
+        depends_on:
+            db:
+                condition: service_healthy
+
+    db:
+        image: mysql:8.0
+        container_name: mysql-db
+        restart: always
+        environment:
+            - MYSQL_ROOT_PASSWORD=senha_root_super_secreta
+            - MYSQL_DATABASE=contrata-dev
+            - MYSQL_USER=server
+            - MYSQL_PASSWORD=senha_forte
+        ports:
+            - "3307:3306"
+        volumes:
+            - mysql_data:/var/lib/mysql
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+volumes:
+    mysql_data:

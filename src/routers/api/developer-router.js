@@ -1,11 +1,11 @@
 import { Router } from "express";
 
 import {
-  createDeveloper,
-  getAllDevelopers,
-  getDeveloperById,
-  updateDeveloper,
-  deleteDeveloper,
+	createDeveloper,
+	getAllDevelopers,
+	getDeveloperById,
+	updateDeveloper,
+	deleteDeveloper,
 } from "../../controllers/developer-controller.js";
 
 const router = Router();

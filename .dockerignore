@@ -9,3 +9,6 @@ docs
 .env.example
 .gitignore
 README.md
+.prettierignore
+.prettierrc
+eslint.config.js

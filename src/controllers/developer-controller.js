@@ -5,13 +5,12 @@ import { createUser, updateUser, deleteUser } from "./user-controller.js";
 // Criar desenvolvedor
 export const createDeveloper = async (req, res) => {
 	try {
-		const { name, email, password, cpf } = req.body;
+		const { name, email, password } = req.body;
 
 		const newUser = await createUser({ name, email, password });
 
 		const newDeveloper = await DeveloperModel.create({
 			userId: newUser.id,
-			cpf,
 		});
 
 		res.status(201).json({

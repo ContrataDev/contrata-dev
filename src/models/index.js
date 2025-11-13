@@ -1,104 +1,55 @@
 import sequelize from "../config/database.js";
 
-import UserModel from "./user-model.js";
-import ContractorModel from "./contractor-model.js";
-import DeveloperModel from "./developer-model.js";
-import SkillModel from "./skill-model.js";
-import ProjectModel from "./projects-model.js";
-import OfferModel from "./offer-model.js";
+// Core entities
+import User from "./core/User.js";
+import Client from "./core/Client.js";
+import Developer from "./core/Developer.js";
+import Organization from "./core/Organization.js";
+import OrganizationMembers from "./core/OrganizationMembers.js";
 
-// User -> Contractor
-UserModel.hasOne(ContractorModel, {
-	foreignKey: "userId",
-	onDelete: "CASCADE",
-	as: "contractor",
-});
-ContractorModel.belongsTo(UserModel, {
-	foreignKey: "userId",
-	as: "user",
-});
+// Marketplace workflow entities
+import Project from "./marketplace/Project.js";
+import JobPosting from "./marketplace/JobPosting.js";
+import Proposal from "./marketplace/Proposal.js";
+import Contract from "./marketplace/Contract.js";
+import Milestone from "./marketplace/Milestone.js";
+import Deliverable from "./marketplace/Deliverable.js";
+import Timesheet from "./marketplace/Timesheet.js";
 
-// User -> Developer
-UserModel.hasOne(DeveloperModel, {
-	foreignKey: "userId",
-	onDelete: "CASCADE",
-	as: "developer",
-});
-DeveloperModel.belongsTo(UserModel, {
-	foreignKey: "userId",
-	as: "user",
-});
+// Profile and qualification entities
+import Skill from "./profile/Skill.js";
+import TechnologyStack from "./profile/TechnologyStack.js";
+import Certification from "./profile/Certification.js";
+import PortfolioItem from "./profile/PortfolioItem.js";
+import Availability from "./profile/Availability.js";
+import RateCard from "./profile/RateCard.js";
 
-// Contractor -> Projects
-ContractorModel.hasMany(ProjectModel, {
-	foreignKey: "contractorId",
-	onDelete: "CASCADE",
-	as: "projects",
-});
-ProjectModel.belongsTo(ContractorModel, {
-	foreignKey: "contractorId",
-	as: "contractor",
-});
+const models = {
+  User,
+  Client,
+  Developer,
+  Organization,
+  OrganizationMembers,
+  Project,
+  JobPosting,
+  Proposal,
+  Contract,
+  Milestone,
+  Deliverable,
+  Timesheet,
+  Skill,
+  TechnologyStack,
+  Certification,
+  PortfolioItem,
+  Availability,
+  RateCard,
+};
 
-// Developer <-> Skill
-DeveloperModel.belongsToMany(SkillModel, {
-	through: "DevSkill",
-	foreignKey: "developerId",
-	otherKey: "skillId",
-	as: "skills",
-});
-SkillModel.belongsToMany(DeveloperModel, {
-	through: "DevSkill",
-	foreignKey: "skillId",
-	otherKey: "developerId",
-	as: "developers",
+Object.values(models).forEach((model) => {
+  if (model.associate) {
+    model.associate(models);
+  }
 });
 
-// Project <-> Skill
-ProjectModel.belongsToMany(SkillModel, {
-	through: "ProjectSkill",
-	foreignKey: "projectId",
-	otherKey: "skillId",
-	as: "skills",
-});
-SkillModel.belongsToMany(ProjectModel, {
-	through: "ProjectSkill",
-	foreignKey: "skillId",
-	otherKey: "projectId",
-	as: "projects",
-});
-
-// Developer -> Offers
-DeveloperModel.hasMany(OfferModel, {
-	foreignKey: "developerId",
-	onDelete: "CASCADE",
-	as: "offers",
-});
-OfferModel.belongsTo(DeveloperModel, {
-	foreignKey: "developerId",
-	as: "developer",
-});
-
-// Project <-> Offer
-ProjectModel.belongsToMany(OfferModel, {
-	through: "ProjectOffer",
-	foreignKey: "projectId",
-	otherKey: "offerId",
-	as: "offers",
-});
-OfferModel.belongsToMany(ProjectModel, {
-	through: "ProjectOffer",
-	foreignKey: "offerId",
-	otherKey: "projectId",
-	as: "projects",
-});
-
-try {
-	await sequelize.authenticate({ logging: false });
-	console.log("Conexão com Banco de Dados bem sucedida");
-} catch (error) {
-	console.error("Não foi possível conectar no Banco de Dados", error);
-	process.exit(1);
-}
-
-await sequelize.sync({ alter: true });
+export { sequelize };
+export default models;

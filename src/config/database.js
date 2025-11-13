@@ -1,59 +1,37 @@
-import "mysql2";
-import "sqlite3";
-
 import { Sequelize } from "sequelize";
-import path from "path";
+import "mysql2";
 
-const env = process.env.NODE_ENV || "development";
+const dbName = process.env.DB_NAME;
+const dbHost = process.env.DB_HOST;
+const dbPort = process.env.DB_PORT;
+const dbUser = process.env.DB_USER;
+const dbPassword = process.env.DB_PASSWORD;
 
-let sequelize;
-
-if (env === "production") {
-	// Usa MySQL em produção
-	const {
-		DB_HOST,
-		DB_PORT = 3306,
-		DB_USER,
-		DB_PASSWORD,
-		DB_NAME,
-	} = process.env;
-
-	if (!DB_HOST || !DB_USER || !DB_NAME) {
+if (process.env.NODE_ENV !== "test") {
+	if (!dbHost || !dbUser || !dbPort) {
 		throw new Error(
-			"Variáveis de banco MySQL obrigatórias não definidas: DB_HOST, DB_USER, DB_NAME"
+			"Variáveis de banco MySQL obrigatórias não definidas: DB_HOST, DB_USER, DB_NAME",
 		);
 	}
-
-	sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
-		host: DB_HOST,
-		port: DB_PORT,
-		dialect: "mysql",
-		logging: process.env.DEBUG === "true" ? console.log : false,
-		dialectOptions: {
-			timezone: "-03:00",
-		},
-		pool: {
-			max: 5,
-			min: 0,
-			acquire: 30000,
-			idle: 10000,
-		},
-	});
-} else {
-	// Usa SQLite em desenvolvimento/teste
-	const storagePath =
-		process.env.DATABASE_PATH ||
-		path.join(process.cwd(), "data/database.sqlite");
-
-	sequelize = new Sequelize({
-		dialect: "sqlite",
-		storage: storagePath,
-		logging: process.env.DEBUG === "true" ? console.log : false,
-		define: {
-			underscored: true,
-			timestamps: true,
-		},
-	});
 }
+
+const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
+	host: dbHost,
+	port: dbPort,
+	dialect: "mysql",
+	dialectOptions: {
+		connectTimeout: 10000,
+	},
+	pool: {
+		max: 5,
+		min: 1,
+		acquire: 30000,
+		idle: 10000,
+	},
+	retry: {
+		max: 5,
+	},
+	logging: false,
+});
 
 export default sequelize;

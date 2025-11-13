@@ -1,0 +1,3 @@
+DROP DATABASE IF EXISTS contrata_dev;
+
+CREATE DATABASE IF NOT EXISTS contrata_dev;

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <script defer src="/javascripts/index.js"></script>
+    <title>Contrata-Dev</title>
+    <style>
+      /* controle de exibição */
+      .section {
+        display: none;
+      }
+
+      .section.active {
+        display: flex;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <a href="/" class="logo">
+        <img src="/images/logo.png" alt="Logo da Contrata-Dev" />
+      </a>
+      <nav class="navbar">
+        <ul>
+          <li>
+            <a
+              href="#"
+              class="nav-link active"
+              id="btnContratar"
+              data-page="contratar"
+              >Eu quero Contratar</a
+            >
+          </li>
+          <li>
+            <a href="#" class="nav-link" id="btnTrabalhar" data-page="trabalhar"
+              >Eu quero Trabalhar</a
+            >
+          </li>
+        </ul>
+      </nav>
+      <div class="buttons-logon">
+        <a href="/auth?type=login">Entrar</a>
+        <a href="/auth?sign-in" id="signin">Cadastre-se</a>
+      </div>
+    </header>
+
+    <main>
+      <!-- Seção Quero Trabalhar -->
+      <section id="sectionTrabalhar" class="section">
+        <div class="descricao">
+          <h1>
+            <span class="destac-text"
+              >Sua carreira, seu ritmo, seu sucesso</span
+            >
+            Transforme seu talento em liberdade
+          </h1>
+          <p>
+            Descubra o poder de trabalhar por conta própria. O mercado de
+            freelancers nunca esteve tão favorável. Ser freelancer é ter
+            liberdade para escolher seus projetos, trabalhar de onde quiser e
+            conquistar a independência financeira que sempre sonhou. Aqui, você
+            é o dono do seu tempo e pode transformar suas habilidades em
+            oportunidades reais.
+          </p>
+          <div class="buttons">
+            <a href="/auth?type=login" id="trabalhar"
+              >Eu Quero Trabalhar Como Freelancer</a
+            >
+            <a href="/auth?type=sign-in"
+              >Você quer contratar?
+              <iconify-icon
+                icon="pixelarticons:arrow-right"
+                width="24"
+              ></iconify-icon>
+            </a>
+          </div>
+        </div>
+        <div>
+          <img src="/images/tunb.png" alt="pessoa mexendo em um computador" />
+        </div>
+      </section>
+
+      <!-- Seção Quero Contratar -->
+      <section id="sectionContratar" class="section active">
+        <div class="left">
+          <div>
+            <img src="/images/contract.webp" alt="" />
+          </div>
+        </div>
+        <div class="right">
+          <div>
+            <h1>
+              <span class="destac-text"
+                >O talento que você precisa, no momento certo</span
+              ><br />
+              Encontre o profissional certo para o seu projeto
+            </h1>
+            <p>
+              Precisa de alguém qualificado e pronto para entregar resultados?
+              Aqui você encontra freelancers especializados, prontos para
+              transformar suas ideias em realidade. Com flexibilidade, agilidade
+              e foco na qualidade, nossos profissionais estão preparados para
+              atender às suas necessidades, seja em projetos pontuais ou
+              demandas contínuas. Ganhe tempo, reduza custos e tenha acesso aos
+              melhores talentos — tudo em um só lugar.
+            </p>
+          </div>
+          <div class="buttons">
+            <a href="/auth?type=login" id="trabalhar">
+              Você quer trabalhar ?
+              <iconify-icon
+                icon="pixelarticons:arrow-right"
+                width="24"
+              ></iconify-icon>
+            </a>
+            <a href="/auth?type=login" id="contract"
+              >Eu Quero Contratar Um Freelancer</a
+            >
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script
+      src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"
+      defer
+    ></script>
+  </body>
+</html>

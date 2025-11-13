@@ -1,11 +1,7 @@
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url] [![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-
 <br />
 <div align="center">
   <a href="https://github.com/ContrataDev/contrata-dev">
-    <img src="docs/assets/images/icon.png" alt="Logo" width="80" height="80">
+    <img src="docs/images/icon.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">ContrataDev</h3>

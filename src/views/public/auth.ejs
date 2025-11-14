@@ -14,13 +14,13 @@
   </head>
 
   <body>
-    <section class="containerAll">
+    <div class="containerAll">
       <div class="card loginActive">
         <!-- LOGIN -->
         <div class="login">
           <div class="formLogin">
             <h2>Login</h2>
-            <form id="loginForm">
+            <form id="loginForm" method="post" action="/auth/password">
               <input type="email" name="email" placeholder="E-mail" required />
               <input
                 type="password"
@@ -42,7 +42,7 @@
         <div class="cadastro">
           <div class="formCadastro">
             <h2>Cadastro</h2>
-            <form id="registerForm">
+            <form id="registerForm" method="post">
               <input
                 type="text"
                 name="name"
@@ -63,7 +63,7 @@
                 required
               />
 
-              <section>
+              <div>
                 <input
                   type="radio"
                   id="desenvolvedor"
@@ -72,9 +72,9 @@
                   required
                 />
                 <label for="desenvolvedor">Desenvolvedor</label>
-              </section>
+              </div>
 
-              <section>
+              <div>
                 <input
                   type="radio"
                   id="contratante"
@@ -82,7 +82,7 @@
                   value="contractor"
                 />
                 <label for="contratante">Contratante</label>
-              </section>
+              </div>
 
               <button type="submit">Cadastrar</button>
             </form>
@@ -94,6 +94,6 @@
           </div>
         </div>
       </div>
-    </section>
+    </div>
   </body>
 </html>

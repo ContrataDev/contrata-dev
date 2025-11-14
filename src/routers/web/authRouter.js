@@ -19,7 +19,7 @@ router.post(
   })
 );
 
-router.post("/register/dev", createDeveloper);
+router.post("/register/develop", createDeveloper);
 router.post("/register/client", createClient);
 
 export default router;

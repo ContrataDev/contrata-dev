@@ -41,7 +41,7 @@ export async function createClient(req, res, next) {
     if (existingClient) {
       return res.status(200).json({
         message: "Client já existente para este usuário",
-        client,
+        client: existingClient,
       });
     }
 

@@ -1,6 +1,9 @@
 import { Router } from "express";
 import authRouter from "./authRouter.js";
 import developRouter from "./developRouter.js";
+import clientRouter from "./clientRouter.js";
+
+import { isClient, isDeveloper } from "../../middlewares/authenticator.js";
 
 const router = Router();
 
@@ -9,6 +12,7 @@ router.get("/", (req, res) => {
 });
 
 router.use("/auth", authRouter);
-router.use("/develop", developRouter);
+router.use("/develop", isDeveloper, developRouter);
+router.use("/client", isClient, clientRouter);
 
 export default router;

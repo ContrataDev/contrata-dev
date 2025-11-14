@@ -1,24 +1,57 @@
+import bcrypt from "bcrypt";
 import models from "../models/index.js";
 import createError from "http-errors";
 
 const Client = models.Client;
 const User = models.User;
-const Project = models.Project;
 
 export async function createClient(req, res, next) {
   try {
-    const { userId, companyName, budgetRange } = req.body;
+    const {
+      userId,
+      name,
+      email,
+      password,
+      role = "client",
+      companyName,
+      budgetRange,
+    } = req.body;
 
-    const user = await User.findByPk(userId);
-    if (!user) return next(createError(404, "Usuário não encontrado"));
+    let user;
+
+    if (userId) {
+      user = await User.findByPk(userId);
+      if (!user) return next(createError(404, "Usuário não encontrado"));
+    } else if (email) {
+      user = await User.findOne({ where: { email } });
+      if (!user) {
+        const passwordHash = await bcrypt.hash(password, 10);
+        user = await User.create({
+          name,
+          email,
+          passwordHash,
+          role,
+        });
+      }
+    } else {
+      return next(createError(400, "É necessário informar userId ou email"));
+    }
+
+    const existingClient = await Client.findOne({ where: { userId: user.id } });
+    if (existingClient) {
+      return res.status(200).json({
+        message: "Client já existente para este usuário",
+        client,
+      });
+    }
 
     const client = await Client.create({
-      userId,
+      userId: user.id,
       companyName,
       budgetRange,
     });
 
-    res.status(201).json(client);
+    res.status(201).json({ client, user });
   } catch (err) {
     next(createError(400, err.message));
   }

@@ -1,4 +1,4 @@
-import { Op } from "sequelize";
+import bcrypt from "bcrypt";
 import models from "../models/index.js";
 import createError from "http-errors";
 
@@ -7,20 +7,58 @@ const User = models.User;
 
 export async function createDeveloper(req, res, next) {
   try {
-    const { userId, stack, seniority, availability, hourlyRate } = req.body;
+    const {
+      userId,
+      name,
+      email,
+      password,
+      role = "developer",
+      stack,
+      seniority,
+      availability,
+      hourlyRate,
+    } = req.body;
 
-    const user = await User.findByPk(userId);
-    if (!user) return next(createError(404, "Usuário não encontrado"));
+    let user;
+
+    if (userId) {
+      // tenta buscar pelo ID
+      user = await User.findByPk(userId);
+      if (!user) return next(createError(404, "Usuário não encontrado"));
+    } else if (email) {
+      // tenta buscar pelo email
+      user = await User.findOne({ where: { email } });
+      if (!user) {
+        // cria novo usuário
+        const passwordHash = await bcrypt.hash(password, 10);
+        user = await User.create({
+          name,
+          email,
+          passwordHash,
+          role,
+        });
+      }
+    } else {
+      return next(createError(400, "É necessário informar userId ou email"));
+    }
+
+    const existingDev = await Developer.findOne({ where: { userId: user.id } });
+    if (existingDev) {
+      return res.status(200).json({
+        message: "Developer já existente para este usuário",
+        developer: existingDev,
+      });
+    }
 
     const developer = await Developer.create({
-      userId,
+      userId: user.id,
       stack,
       seniority,
       availability,
       hourlyRate,
     });
 
-    res.status(201).json(developer);
+    res.status(201).json({ developer, user });
   } catch (err) {
     next(createError(400, err.message));
   }

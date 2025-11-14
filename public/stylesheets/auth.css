@@ -25,7 +25,7 @@ form {
 	}
 }
 
-input {
+input:not([type="radio"]) {
 	padding: 12px 20px;
 	border-radius: 12px;
 	border: none;

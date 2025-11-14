@@ -3,7 +3,7 @@ import { Router } from "express";
 const router = Router();
 
 router.get("/dashboard", (req, res) => {
-  res.render("develop/dashboard");
+  res.render("client/dashboard");
 });
 
 export default router;

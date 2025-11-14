@@ -60,8 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const data = Object.fromEntries(new FormData(formCadastro));
-      const url =
-c         tipoUsuario === "dev" ? "/auth/register/dev" : "/auth/register/client";
+      const url = tipoUsuario === "dev" ? "/auth/register/develop" : "/auth/register/client";
 
       try {
         const res = await fetch(url, {

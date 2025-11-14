@@ -20,7 +20,7 @@
         <div class="login">
           <div class="formLogin">
             <h2>Login</h2>
-            <form id="loginForm">
+            <form id="loginForm" method="post" action="/auth/password">
               <input type="email" name="email" placeholder="E-mail" required />
               <input
                 type="password"
@@ -42,7 +42,7 @@
         <div class="cadastro">
           <div class="formCadastro">
             <h2>Cadastro</h2>
-            <form id="registerForm">
+            <form id="registerForm" method="post">
               <input
                 type="text"
                 name="name"

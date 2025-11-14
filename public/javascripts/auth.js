@@ -2,51 +2,29 @@ let card = document.querySelector(".card");
 let loginButton = document.querySelector(".loginButton");
 let cadastroButton = document.querySelector(".cadastroButton");
 
-loginButton.onclick = () => {
-  card.classList.remove("cadastroActive");
-  card.classList.add("loginActive");
-};
+function toggleCardMode(card, mode) {
+  if (mode === "login") {
+    card.classList.remove("cadastroActive");
+    card.classList.add("loginActive");
+  } else if (mode === "cadastro") {
+    card.classList.remove("loginActive");
+    card.classList.add("cadastroActive");
+  }
+}
+const params = new URLSearchParams(window.location.search);
 
-cadastroButton.onclick = () => {
-  card.classList.remove("loginActive");
-  card.classList.add("cadastroActive");
-};
+if (params.get("type") === "login") {
+  toggleCardMode(card, "login");
+} else if (params.get("type") === "cadastro") {
+  toggleCardMode(card, "cadastro");
+}
+
+loginButton.onclick = () => toggleCardMode(card, "login");
+cadastroButton.onclick = () => toggleCardMode(card, "cadastro");
 
 document.addEventListener("DOMContentLoaded", () => {
-  const formLogin = document.getElementById("loginForm");
   const formCadastro = document.getElementById("registerForm");
 
-  // LOGIN
-  if (formLogin) {
-    formLogin.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(formLogin));
-
-      try {
-        const res = await fetch("/auth/password", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        });
-
-        const result = await res.json();
-        if (!res.ok) throw new Error(result.message || "Erro ao fazer login");
-
-        alert(result.message);
-        if (result.user.role === "developer") {
-          window.location.href = "/homeD";
-        } else if (result.user.role === "client") {
-          window.location.href = "/homeE";
-        } else {
-          window.location.href = "/";
-        }
-      } catch (err) {
-        alert("Erro: " + err.message);
-      }
-    });
-  }
-
-  // CADASTRO
   if (formCadastro) {
     formCadastro.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -60,7 +38,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const data = Object.fromEntries(new FormData(formCadastro));
-      const url = tipoUsuario === "dev" ? "/auth/register/develop" : "/auth/register/client";
+      const url =
+        tipoUsuario === "dev"
+          ? "/auth/register/develop"
+          : "/auth/register/client";
 
       try {
         const res = await fetch(url, {
@@ -71,23 +52,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const result = await res.json();
         if (!res.ok) throw new Error(result.message || "Erro no cadastro");
-        alert(result.message);
 
-        // LOGIN AUTOMÁTICO
-        const loginRes = await fetch("/auth/password", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: data.email, password: data.password }),
-        });
-
-        const loginResult = await loginRes.json();
-        if (loginRes.ok) {
-          alert("Conta criada e login realizado com sucesso!");
-          window.location.href =
-            loginResult.user.role === "developer" ? "/homeD" : "/homeE";
-        } else {
-          alert("Conta criada, mas falha ao realizar login automático.");
-        }
+        toggleCardMode(card, "login");
       } catch (err) {
         alert("Erro: " + err.message);
       }

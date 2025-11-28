@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import { Op } from "sequelize";
 import models from "../models/index.js";
 import createError from "http-errors";
 
@@ -112,7 +113,11 @@ export async function getDeveloperById(req, res, next) {
   try {
     const { id } = req.params;
     const developer = await Developer.findByPk(id, {
-      include: [{ model: User, attributes: ["name", "email", "role"] }],
+      include: [
+        { model: User, attributes: ["name", "email", "role"] },
+        { model: models.TechnologyStack },
+        { model: models.PortfolioItem },
+      ],
     });
 
     if (!developer)
@@ -127,15 +132,43 @@ export async function getDeveloperById(req, res, next) {
 export async function updateDeveloper(req, res, next) {
   try {
     const { id } = req.params;
-    const { stack, seniority, availability, hourlyRate } = req.body;
+    const { stack, seniority, availability, hourlyRate, phone, country, technologyStacks, portfolioItems } = req.body;
 
     const developer = await Developer.findByPk(id);
     if (!developer)
       return next(createError(404, "Desenvolvedor não encontrado"));
 
-    await developer.update({ stack, seniority, availability, hourlyRate });
+    await developer.update({ stack, seniority, availability, hourlyRate, phone, country });
 
-    res.json(developer);
+    // handle technology stacks (replace existing)
+    if (Array.isArray(technologyStacks)) {
+      // remove existing and recreate
+      await models.TechnologyStack.destroy({ where: { developerId: developer.id } });
+      const stacksToCreate = technologyStacks
+        .filter((s) => s && (typeof s === 'string' || s.name))
+        .map((s) => (typeof s === 'string' ? { name: s.trim() } : s))
+        .map((s) => ({ ...s, developerId: developer.id }));
+      if (stacksToCreate.length) await models.TechnologyStack.bulkCreate(stacksToCreate);
+    }
+
+    // handle portfolio items
+    if (Array.isArray(portfolioItems)) {
+      await models.PortfolioItem.destroy({ where: { developerId: developer.id } });
+      const itemsToCreate = portfolioItems
+        .filter((p) => p && (p.title || p.url))
+        .map((p) => ({ ...p, developerId: developer.id }));
+      if (itemsToCreate.length) await models.PortfolioItem.bulkCreate(itemsToCreate);
+    }
+
+    const updated = await Developer.findByPk(id, {
+      include: [
+        { model: User, attributes: ["name", "email", "role"] },
+        { model: models.TechnologyStack },
+        { model: models.PortfolioItem },
+      ],
+    });
+
+    res.json(updated);
   } catch (err) {
     next(createError(400, err.message));
   }

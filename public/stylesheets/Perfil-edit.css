@@ -63,6 +63,53 @@ body {
 	text-align: center;
 }
 
+.big-avatar {
+	width: 220px;
+	height: 220px;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+}
+
+.profile-name {
+	margin-top: 14px;
+	font-size: 28px;
+	font-weight: 600;
+}
+
+.tecnologias.large { width: 100%; max-width: 420px; text-align: left; }
+.tech-chip {
+	display:inline-block;
+	padding: 8px 12px;
+	background: #111827;
+	border-radius: 8px;
+	margin: 6px 6px 6px 0;
+	color: #fff;
+	font-weight: 500;
+}
+
+.add-link { display:inline-block; margin-top:8px; color:#c9c9c9; text-decoration:none; cursor:pointer; }
+
+.right-top { display:flex; flex-direction:column; gap:18px; }
+.top-box .row-fields { display:flex; gap:16px; }
+.top-box .field { flex:1; display:flex; flex-direction:column; gap:6px; }
+
+.project-item { display:flex; align-items:center; gap:16px; margin-top:12px; }
+.project-item .logo-placeholder { width:58px; height:58px; background:#111827; border-radius:10px; display:flex; align-items:center; justify-content:center; }
+.proj-title { font-weight:600; }
+.proj-link { color:#c9c9c9; font-size:13px; }
+
+.actions { display:flex; gap:12px; justify-content:flex-start; margin-top:24px; }
+.button { padding:10px 20px; border-radius:10px; cursor:pointer; border:none; }
+.button.primary { background:#d97706; color:#fff; }
+.button.outline { background:transparent; color:#c9c9c9; border:1px solid rgba(255,255,255,0.04); }
+
+/* small responsive tweaks */
+@media (max-width: 900px) {
+	.conteudo { flex-direction:column; }
+	.col-esquerda, .col-direita { max-width:100%; }
+}
+
 .tech-icons {
 	margin-top: 5px;
 	display: flex;

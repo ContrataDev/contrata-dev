@@ -13,7 +13,8 @@
   },
   "scripts": {
     "start": "node bin/www",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "test": "node tests/run-tests.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",

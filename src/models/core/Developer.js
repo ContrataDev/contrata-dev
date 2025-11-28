@@ -19,6 +19,9 @@ class Developer extends Model {
 Developer.init(
   {
     userId: { type: DataTypes.UUID, allowNull: false },
+    phone: DataTypes.STRING,
+    country: DataTypes.STRING,
+    avatar: DataTypes.STRING,
     stack: DataTypes.STRING,
     seniority: DataTypes.ENUM("junior", "pleno", "senior"),
     availability: DataTypes.STRING,

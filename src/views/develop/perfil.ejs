@@ -31,23 +31,22 @@
           <div class="avatar">
             <!--aqui vai ficar a img de perfil do usuario  -->
           </div>
-          <h2>Nome do Usuário</h2>
+          <h2><%= developer && developer.User ? developer.User.name : 'Nome do Usuário' %></h2>
 
           <div class="tecnologias">
             <p>Tecnologias</p>
             <div class="tech-icons">
-              <iconify-icon icon="logos:javascript" width="32"></iconify-icon>
-              <iconify-icon icon="devicon:html5" width="32"></iconify-icon>
-              <iconify-icon icon="logos:php" width="32"></iconify-icon>
-              <iconify-icon icon="logos:python" width="32"></iconify-icon>
-              <iconify-icon
-                icon="material-icon-theme:kotlin"
-                width="32"
-              ></iconify-icon>
+              <% if (developer && developer.TechnologyStacks && developer.TechnologyStacks.length) { %>
+                <% developer.TechnologyStacks.forEach(function(ts){ %>
+                  <div class="tech-item"><%= ts.name %></div>
+                <% }) %>
+              <% } else { %>
+                <p class="muted">Nenhuma tecnologia cadastrada</p>
+              <% } %>
             </div>
           </div>
 
-          <button class="btn-editar">Editar Perfil</button>
+          <a href="/develop/edit-perfil" class="btn-editar">Editar Perfil</a>
         </div>
 
         <!-- Coluna direita -->
@@ -55,25 +54,31 @@
           <h2>Informações do Perfil</h2>
           <div class="info-box">
             <p><strong>Email</strong></p>
-            <input type="text" value="nome@example.com.br" readonly />
+            <input type="text" value="<%= developer && developer.User ? developer.User.email : 'nome@example.com.br' %>" readonly />
 
             <p><strong>Telefone</strong></p>
-            <input type="text" value="+XX (XX) XXXXX-XXXX" readonly />
+            <input type="text" value="<%= developer && developer.phone ? developer.phone : '+XX (XX) XXXXX-XXXX' %>" readonly />
 
             <p><strong>País</strong></p>
-            <input type="text" value="Brasil" readonly />
+            <input type="text" value="<%= developer && developer.country ? developer.country : 'Brasil' %>" readonly />
           </div>
 
           <!-- Projetos -->
           <div class="projetos">
             <h3>Projetos</h3>
-            <div class="projeto-card">
-              <iconify-icon icon="mdi:github" width="62"></iconify-icon>
-              <div>
-                <p>Nome do projeto</p>
-                <p>Link: www.exemplo.git</p>
-              </div>
-            </div>
+            <% if (developer && developer.PortfolioItems && developer.PortfolioItems.length) { %>
+              <% developer.PortfolioItems.forEach(function(card){ %>
+                <div class="projeto-card">
+                  <iconify-icon icon="mdi:github" width="62"></iconify-icon>
+                  <div>
+                    <p><%= card.title %></p>
+                    <p>Link: <%= card.link %></p>
+                  </div>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <p class="muted">Nenhum projeto encontrado</p>
+            <% } %>
             <!-- Repita os cards para mais projetos -->
           </div>
         </div>

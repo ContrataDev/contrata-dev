@@ -10,4 +10,8 @@ router.get("/create", (req, res) => {
   res.render("client/create");
 });
 
+router.get("/search", (req, res) => {
+  res.render("client/search");
+});
+
 export default router;

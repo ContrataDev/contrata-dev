@@ -11,6 +11,7 @@ router.get(
   (req, res, next) => {
     if (!req.user) {
       next();
+      return;
     }
     if (req.user.role === "developer") {
       return res.redirect("/develop/dashboard");

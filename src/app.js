@@ -58,7 +58,7 @@ app.use(function (err, req, res) {
     console.log("✅ Conexão com o banco estabelecida!");
 
     if (process.env.NODE_ENV == "development") {
-      await sequelize.sync({ force: true });
+      await sequelize.sync({ alter: true });
     } else {
       await sequelize.sync();
     }

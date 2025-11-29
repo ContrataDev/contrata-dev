@@ -13,7 +13,8 @@ router.get("/dashboard", (req, res) => {
 router.get("/edit-perfil", async (req, res, next) => {
   try {
     const userId = req.user?.id;
-    const developer = await Developer.findOne({
+    // ensure a Developer row exists for the logged in user so the edit page always has an id
+    let developer = await Developer.findOne({
       where: { userId },
       include: [
         { model: User, attributes: ["name", "email"] },
@@ -23,7 +24,22 @@ router.get("/edit-perfil", async (req, res, next) => {
       ],
     });
 
-    res.render("develop/edit-perfil", { developer });
+    if (!developer) {
+      // create a minimal developer row so the front-end can save/edit
+      developer = await Developer.create({ userId });
+      developer = await Developer.findByPk(developer.id, {
+        include: [
+          { model: User, attributes: ["name", "email"] },
+          { model: TechnologyStack },
+          { model: PortfolioItem },
+          { model: Certification },
+        ],
+      });
+    }
+
+    // pass a plain object (not a Sequelize instance) so client-side JSON serialization
+    // includes associations like TechnologyStacks and PortfolioItems reliably
+    res.render("develop/edit-perfil", { developer: developer ? developer.toJSON() : null });
   } catch (err) {
     next(err);
   }
@@ -42,7 +58,9 @@ router.get("/perfil", async (req, res, next) => {
       ],
     });
 
-    res.render("develop/perfil", { developer });
+    // pass timestamp (query param t) so view can cache-bust avatar url
+    const ts = req.query && req.query.t ? req.query.t : Date.now();
+    res.render("develop/perfil", { developer: developer ? developer.toJSON() : null, ts });
   } catch (err) {
     next(err);
   }

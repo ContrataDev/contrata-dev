@@ -9,13 +9,17 @@
   </head>
   <body>
     <div class="perfil-container">
+     <!-- Botão voltar -->
       <div class="voltar">
-        <a href="/develop/perfil">← Voltar</a>
+        <a class="voltar" href="/develop/perfil">
+        <iconify-icon icon="iconamoon:arrow-left-2" width="20"></iconify-icon>
+        Voltar
+        </a>
       </div>
 
       <div class="conteudo">
         <div class="col-esquerda">
-          <div class="avatar big-avatar">
+          <div class="avatar big-avatar" id="avatarPreview">
             <% if (developer && developer.avatar) { %>
               <img src="<%= developer.avatar %>" alt="avatar" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />
             <% } else { %>
@@ -23,16 +27,18 @@
               <div style="width:100%; height:100%; border-radius:50%; background:#d9d9d9;"></div>
             <% } %>
           </div>
+
+          <!-- Avatar upload control -->
+          <div style="margin-top:12px; display:flex; gap:8px; align-items:center;">
+            <label for="avatarFile" class="add-link" style="cursor:pointer; padding:6px 10px;">alterar avatar</label>
+            <input id="avatarFile" name="avatar" type="file" accept="image/*" style="display:none;" />
+          </div>
           <h1 class="profile-name"><%= developer && developer.User ? developer.User.name : 'Nome do Usuário' %></h1>
 
           <div class="tecnologias large">
             <p>Tecnologias</p>
             <div id="techList" class="tech-icons">
-              <% if (developer && developer.TechnologyStacks && developer.TechnologyStacks.length) { %>
-                <% developer.TechnologyStacks.forEach(function(ts){ %>
-                  <div class="tech-chip"><%= ts.name %></div>
-                <% }) %>
-              <% } %>
+              <!-- client-side will render existing technology chips with remove buttons -->
             </div>
             <a id="addTech" href="#" class="add-link">adicionar tecnologia +</a>
           </div>
@@ -62,17 +68,7 @@
           </div>
 
           <div id="projectsContainer">
-            <% if (developer && developer.PortfolioItems && developer.PortfolioItems.length) { %>
-              <% developer.PortfolioItems.forEach(function(card){ %>
-                <div class="projeto-card project-item">
-                  <div class="logo-placeholder"> <iconify-icon icon="mdi:github" width="40"></iconify-icon> </div>
-                  <div>
-                    <p class="proj-title"><%= card.title %></p>
-                    <p class="proj-link">Link : <%= card.url || card.link || '' %></p>
-                  </div>
-                </div>
-              <% }) %>
-            <% } %>
+            <!-- client-side will render existing projects with remove buttons -->
           </div>
 
           <div class="actions">
@@ -86,8 +82,9 @@
 
     <script>
       // expose the developer id and data to the client-side script
-      window.__DEVELOPER_ID = <%= developer ? JSON.stringify(developer.id) : 'null' %>;
-      window.__DEVELOPER_DATA = <%= developer ? JSON.stringify(developer) : 'null' %>;
+      // use unescaped JSON output so the client receives valid JS objects
+      window.__DEVELOPER_ID = <%- JSON.stringify(developer ? developer.id : null) %>;
+      window.__DEVELOPER_DATA = <%- JSON.stringify(developer ? developer : null) %>;
     </script>
     <script src="/javascripts/developer-edit.js"></script>
   </body>

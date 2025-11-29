@@ -21,15 +21,21 @@
     <div class="perfil-container">
       <!-- Botão voltar -->
       <div class="voltar">
+        <a class="voltar" href="/develop/dashboard">
         <iconify-icon icon="iconamoon:arrow-left-2" width="20"></iconify-icon>
         Voltar
+        </a>
       </div>
 
       <div class="conteudo">
         <!-- Coluna esquerda -->
         <div class="col-esquerda">
           <div class="avatar">
-            <!--aqui vai ficar a img de perfil do usuario  -->
+            <% if (developer && developer.avatar) { %>
+              <img src="<%= developer.avatar %><%= ts ? ('?t=' + ts) : '' %>" alt="avatar" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />
+            <% } else { %>
+              <!--aqui vai ficar a img de perfil do usuario  -->
+            <% } %>
           </div>
           <h2><%= developer && developer.User ? developer.User.name : 'Nome do Usuário' %></h2>
 
@@ -72,7 +78,7 @@
                   <iconify-icon icon="mdi:github" width="62"></iconify-icon>
                   <div>
                     <p><%= card.title %></p>
-                    <p>Link: <%= card.link %></p>
+                    <p>Link: <%= card.url || card.link %></p>
                   </div>
                 </div>
               <% }) %>

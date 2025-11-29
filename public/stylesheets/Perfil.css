@@ -29,6 +29,7 @@ body {
 	gap: 5px;
 	color: #9ca3af;
 	cursor: pointer;
+	text-decoration: none;
 }
 
 .conteudo {
@@ -78,6 +79,7 @@ body {
 	border-radius: 6px;
 	cursor: pointer;
 	margin-top: 10px;
+	text-decoration: none;
 }
 
 .col-direita {

@@ -142,5 +142,8 @@ vite.config.ts.timestamp-*
 data/
 **/*.sqlite
 
+# ignore uploaded user images
+public/uploads/
+
 # Editor Vscode
 .vscode/

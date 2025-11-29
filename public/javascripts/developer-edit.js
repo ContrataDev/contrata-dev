@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const developerId = window.__DEVELOPER_ID;
+  let developerId = window.__DEVELOPER_ID;
   const developerData = window.__DEVELOPER_DATA || null;
 
   const techListEl = document.getElementById('techList');
@@ -81,6 +81,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // avatar file handling
+  const avatarFileInput = document.getElementById('avatarFile');
+  const avatarPreviewEl = document.getElementById('avatarPreview');
+
+  avatarFileInput?.addEventListener('change', (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    // preview image
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (avatarPreviewEl) {
+        avatarPreviewEl.innerHTML = '';
+        const img = document.createElement('img');
+        img.src = reader.result;
+        img.alt = 'avatar preview';
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.borderRadius = '50%';
+        img.style.objectFit = 'cover';
+        avatarPreviewEl.appendChild(img);
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+
   addTechBtn?.addEventListener('click', (e) => {
     e.preventDefault();
     const name = prompt('Nome da tecnologia (ex: JavaScript, React):');
@@ -93,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     const title = prompt('Título do projeto:');
     if (!title) return;
-    const url = prompt('URL do projeto (opcional):');
+    const url = prompt('URL do projeto:');
     projectsContainer.appendChild(makeProjectItem({ title, url }));
   });
 
@@ -104,7 +130,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   saveBtn?.addEventListener('click', async (e) => {
     e.preventDefault();
-    if (!developerId) return alert('Perfil não identificado');
+
+    // If the page doesn't have an associated Developer id, ask the server
+    // to create/get the current user's Developer. This helps when the
+    // logged-in user doesn't yet have a Developer row.
+    if (!developerId) {
+      try {
+        const meRes = await fetch('/api/v1/developers/me', { method: 'POST', credentials: 'same-origin' });
+        if (!meRes.ok) {
+          const err = await meRes.json().catch(() => ({}));
+          return alert(err.error || 'Perfil não identificado');
+        }
+        const dev = await meRes.json();
+        developerId = dev && dev.id ? dev.id : developerId;
+        // update global variable so other scripts could use it
+        window.__DEVELOPER_ID = developerId;
+      } catch (err) {
+        console.error('Erro ao criar/obter developer:', err);
+        return alert('Perfil não identificado');
+      }
+    }
 
     const phone = document.querySelector('input[name="phone"]')?.value || '';
     const country = document.querySelector('input[name="country"]')?.value || '';
@@ -124,6 +169,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const payload = { phone, country, technologyStacks: techs, portfolioItems: projects };
 
     try {
+      // first: upload avatar if provided
+      const avatarFile = avatarFileInput && avatarFileInput.files && avatarFileInput.files[0];
+      if (avatarFile) {
+        const form = new FormData();
+        form.append('avatar', avatarFile);
+        const avRes = await fetch(`/api/v1/developers/${developerId}/avatar`, {
+          method: 'POST',
+          body: form,
+          credentials: 'same-origin'
+        });
+        if (!avRes.ok) {
+          const err = await avRes.json().catch(() => ({}));
+          return alert(err.error || 'Erro ao fazer upload do avatar');
+        }
+        // merge returned avatar (optionally) into developerData so preview is consistent
+        const updatedDev = await avRes.json().catch(() => null);
+        if (updatedDev && updatedDev.avatar) {
+          // ensure the form will send the latest avatar if needed, and update UI
+          // do not display filename in UI per design
+        }
+      }
+
       const res = await fetch(`/api/v1/developers/${developerId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -132,7 +199,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       if (res.ok) {
-        window.location = '/develop/perfil';
+        // add a timestamp to bust cache so the newly uploaded avatar is fetched
+        window.location = '/develop/perfil?t=' + Date.now();
       } else {
         const err = await res.json().catch(() => ({}));
         alert(err.error || 'Erro ao salvar');

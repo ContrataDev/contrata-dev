@@ -29,16 +29,20 @@
         <nav>
           <ul>
             <li>
-              <iconify-icon icon="tabler:home" width="24"></iconify-icon> Home
+              <a href="dashboard">
+                <iconify-icon icon="tabler:home" width="24"></iconify-icon> Home
+              </a>
             </li>
             <li>
-              <span
-                ><iconify-icon
-                  icon="iconamoon:profile-bold"
-                  width="24"
-                ></iconify-icon
-              ></span>
-              Perfil
+              <a href="profile">
+                <span>
+                  <iconify-icon
+                    icon="iconamoon:profile-bold"
+                    width="24"
+                  ></iconify-icon
+                ></span>
+                Perfil
+              </a>
             </li>
           </ul>
         </nav>
@@ -48,10 +52,10 @@
       <main class="main-content">
         <div class="header">
           <h1>Suas Solicitações</h1>
-          <button class="btn-criar">
+          <a href="create" class="btn-criar">
             <iconify-icon icon="ic:round-plus" width="20"></iconify-icon>Criar
             sua Solicitação
-          </button>
+          </a>
         </div>
 
         <section class="section-status">

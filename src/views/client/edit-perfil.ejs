@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/Perfil.css" />
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js" await></script>
+    <title>Editar perfil - Cliente</title>
+  </head>
+  <body>
+    <div class="perfil-container">
+      <div class="voltar">
+        <a class="voltar" href="/client/perfil">
+          <iconify-icon icon="iconamoon:arrow-left-2" width="20"></iconify-icon>
+          Voltar
+        </a>
+      </div>
+
+      <div class="conteudo">
+        <div class="col-esquerda">
+          <div class="avatar big-avatar" id="avatarPreview">
+            <% if (client && client.avatar) { %>
+              <img src="<%= client.avatar %>" alt="avatar" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />
+            <% } else { %>
+              <div style="width:100%; height:100%; border-radius:50%; background:#d9d9d9;"></div>
+            <% } %>
+          </div>
+
+          <div style="margin-top:12px; display:flex; gap:8px; align-items:center;">
+            <label for="avatarFile" class="add-link" style="cursor:pointer; padding:6px 10px;">alterar avatar</label>
+            <input id="avatarFile" name="avatar" type="file" accept="image/*" style="display:none;" />
+          </div>
+
+          <h1 class="profile-name"><%= client && client.User ? client.User.name : 'Nome do Usuário' %></h1>
+        </div>
+
+        <div class="col-direita right-top">
+          <div class="info-box top-box">
+            <div class="row-fields">
+              <div class="field">
+                <label>Email</label>
+                <input name="email" readonly value="<%= client && client.User ? client.User.email : '' %>" />
+              </div>
+              <div class="field">
+                <label>Empresa</label>
+                <input name="companyName" value="<%= client ? client.companyName || '' : '' %>" />
+              </div>
+              <div class="field">
+                <label>Faixa de orçamento</label>
+                <input name="budgetRange" value="<%= client ? client.budgetRange || '' : '' %>" />
+              </div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button id="cancelBtn" type="button" class="button outline">cancelar</button>
+            <button id="saveBtn" type="button" class="button primary">salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.__CLIENT_ID = <%- JSON.stringify(client ? client.id : null) %>;
+      window.__CLIENT_DATA = <%- JSON.stringify(client ? client : null) %>;
+    </script>
+    <script src="/javascripts/client-edit.js"></script>
+  </body>
+</html>

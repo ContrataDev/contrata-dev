@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js" await></script>
+    <link rel="stylesheet" href="/stylesheets/Perfil.css" />
+    <title>Perfil do Cliente</title>
+  </head>
+  <body>
+    <div class="perfil-container">
+      <div class="voltar">
+        <a class="voltar" href="/client/dashboard">
+          <iconify-icon icon="iconamoon:arrow-left-2" width="20"></iconify-icon>
+          Voltar
+        </a>
+      </div>
+
+      <div class="conteudo">
+        <div class="col-esquerda">
+          <div class="avatar">
+            <% if (client && client.avatar) { %>
+              <img src="<%= client.avatar %><%= ts ? ('?t=' + ts) : '' %>" alt="avatar" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />
+            <% } else { %>
+              <!-- no avatar -->
+            <% } %>
+          </div>
+
+          <h2><%= client && client.User ? client.User.name : 'Nome do Usuário' %></h2>
+
+          <div class="tecnologias">
+            <p>Empresa</p>
+            <div class="tech-icons">
+              <p class="muted"><%= client && client.companyName ? client.companyName : 'Sem empresa registrada' %></p>
+            </div>
+            <p>Faixa de orçamento: <%= client && client.budgetRange ? client.budgetRange : 'Não informado' %></p>
+          </div>
+
+          <a href="/client/edit-perfil" class="btn-editar">Editar Perfil</a>
+        </div>
+
+        <div class="col-direita">
+          <h2>Informações</h2>
+          <div class="info-box">
+            <p><strong>Email</strong></p>
+            <input type="text" value="<%= client && client.User ? client.User.email : 'nome@example.com.br' %>" readonly />
+
+            <p><strong>Empresa</strong></p>
+            <input type="text" value="<%= client && client.companyName ? client.companyName : '-' %>" readonly />
+
+            <p><strong>Faixa de orçamento</strong></p>
+            <input type="text" value="<%= client && client.budgetRange ? client.budgetRange : '-' %>" readonly />
+          </div>
+
+          <div class="projetos">
+            <h3>Projetos</h3>
+            <% if (client && client.Projects && client.Projects.length) { %>
+              <% client.Projects.forEach(function(p) { %>
+                <div class="projeto-card">
+                  <div>
+                    <p><%= p.title %></p>
+                    <p>Status: <%= p.status %></p>
+                  </div>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <p class="muted">Nenhum projeto cadastrado</p>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import models from "../models/index.js";
 import createError from "http-errors";
+import path from 'path';
+import fs from 'fs';
 
 const Client = models.Client;
 const User = models.User;
@@ -113,6 +115,55 @@ export async function deleteClient(req, res, next) {
 
     await client.destroy();
     res.status(204).end();
+  } catch (err) {
+    next(createError(500, err.message));
+  }
+}
+
+export async function updateClientAvatar(req, res, next) {
+  try {
+    const { id } = req.params;
+    const client = await Client.findByPk(id);
+    if (!client) return next(createError(404, 'Cliente não encontrado'));
+
+    if (!req.file) return next(createError(400, 'Arquivo não informado'));
+
+    const publicPath = `/uploads/avatars/${req.file.filename}`;
+
+    if (client.avatar && client.avatar.startsWith('/uploads/avatars/')) {
+      try {
+        const oldFilename = path.basename(client.avatar);
+        const oldPath = path.resolve(process.cwd(), 'public', 'uploads', 'avatars', oldFilename);
+        if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+      } catch (err) {
+        console.warn('could not remove old client avatar', err.message || err);
+      }
+    }
+
+    await client.update({ avatar: publicPath });
+
+    res.json({ id: client.id, avatar: client.avatar });
+  } catch (err) {
+    next(createError(500, err.message));
+  }
+}
+
+export async function getOrCreateClientForCurrentUser(req, res, next) {
+  try {
+    const userId = req.user?.id;
+    if (!userId) return res.status(401).json({ error: 'Usuário não autenticado' });
+
+    let client = await Client.findOne({ where: { userId } });
+    if (!client) client = await Client.create({ userId });
+
+    const full = await Client.findByPk(client.id, {
+      include: [
+        { model: User, attributes: ['name', 'email', 'role'] },
+        { model: models.Project }
+      ],
+    });
+
+    res.json(full);
   } catch (err) {
     next(createError(500, err.message));
   }

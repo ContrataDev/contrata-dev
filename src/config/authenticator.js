@@ -26,14 +26,40 @@ passport.use(
   )
 );
 
-// serialização para sessão
-passport.serializeUser((user, done) => {
-  done(null, user.id);
+passport.serializeUser(async (user, done) => {
+  try {
+    let userId = user.id;
+    let clientId = null;
+    let developerId = null;
+
+    const client = await models.Client.findOne({ where: { userId } });
+    if (client) clientId = client.id;
+
+    const developer = await models.Developer.findOne({ where: { userId } });
+    if (developer) developerId = developer.id;
+
+    done(null, {
+      userId,
+      clientId,
+      developerId,
+    });
+  } catch (err) {
+    done(err);
+  }
 });
 
-passport.deserializeUser(async (id, done) => {
+passport.deserializeUser(async (obj, done) => {
   try {
-    const user = await models.User.findByPk(id);
+    const user = await models.User.findByPk(obj.userId);
+    if (!user) return done(null, false);
+
+    if (obj.clientId) {
+      user.setDataValue("clientId", obj.clientId);
+    }
+
+    if (obj.developerId) {
+      user.setDataValue("developerId", obj.developerId);
+    }
     done(null, user);
   } catch (err) {
     done(err);

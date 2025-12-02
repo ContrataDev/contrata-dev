@@ -147,19 +147,14 @@ export async function recommendDevelopers(req, res, next) {
 }
 export async function getProjectsByUser(req, res, next) {
   try {
-    const userId = req.user?.id;
+    const clientId = req.user?.dataValues.clientId;
 
-    if (!userId) {
-      return next(createError(401, "Usuário não autenticado"));
-    }
-
-    const client = await Client.findOne({ where: { userId } });
-    if (!client) {
-      return next(createError(404, "Cliente não encontrado para este usuário"));
+    if (!clientId) {
+      return next(createError(401, "Cliente não autenticado"));
     }
 
     const { status } = req.query;
-    const where = { clientId: client.id };
+    const where = { clientId: clientId };
     if (status) {
       where.status = status;
     }

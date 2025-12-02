@@ -158,8 +158,14 @@ export async function getProjectsByUser(req, res, next) {
       return next(createError(404, "Cliente não encontrado para este usuário"));
     }
 
+    const { status } = req.query;
+    const where = { clientId: client.id };
+    if (status) {
+      where.status = status;
+    }
+
     const projects = await Project.findAll({
-      where: { clientId: client.id },
+      where,
     });
 
     if (!projects || projects.length === 0) {

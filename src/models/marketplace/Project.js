@@ -14,6 +14,7 @@ Project.init(
   {
     title: DataTypes.STRING,
     description: DataTypes.TEXT,
+    technologies: DataTypes.TEXT,
     budget: DataTypes.FLOAT,
     deadline: DataTypes.DATE,
     status: DataTypes.ENUM(

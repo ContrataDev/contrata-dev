@@ -4,77 +4,121 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Contrata-Dev: <%= title %>
-    </title>
+    <title>Contrata-Dev: Criar Solicitação</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/stylesheets/request.css">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 
 </head>
 
 <body>
+
+    <% 
+        var form = typeof form !== "undefined" ? form : {};
+        var error = typeof error !== "undefined" ? error : null;
+        var tecnologiasDisponiveis = typeof tecnologiasDisponiveis !== "undefined" 
+                                     ? tecnologiasDisponiveis 
+                                     : ['JavaScript','Node.js','React','TypeScript','Python','PostgreSQL'];
+        var action = typeof action !== "undefined" ? action : "/client/solicitacoes";
+        var backUrl = typeof backUrl !== "undefined" ? backUrl : "/client/dashboard";
+    %>
+
     <header class="topbar">
         <img src="/images/logo.webp" alt="Logo" class="logo">
-
-        <!-- Coloque seu logo em /public/images/logo.svg se quiser -->
-        <!-- <img src="/images/logo.svg" alt="logo" class="logo"> -->
     </header>
-    <a class="back" href="<%= backUrl || '/' %>">← Voltar</a>
+
+    <a class="back" href="<%= backUrl %>">← Voltar</a>
+
     <main class="container">
-        <form id="pedidoForm" action="<%= action || '/solicitacoes' %>" method="post">
+
+        <form id="pedidoForm" action="<%= action || '/client/solicitacoes' %>" method="post">
+
             <div class="field">
                 <label for="titulo">Titulo Da Solicitação</label>
-                <input id="titulo" name="titulo" type="text" required maxlength="100"
-                    value="<%= (form && form.titulo) || '' %>">
+                <input id="titulo"
+                       name="titulo"
+                       type="text"
+                       required
+                       maxlength="75"
+                       value="<%= form.titulo || '' %>">
+            </div>
+            <div class="field">
+                <label for="orcamento">Orçamento</label>
+                <input id="orcamento"
+                       name="budget"
+                       type="number"
+                       step="0.01"
+                       min="0"
+                       value="<%= form.budget || '' %>">
             </div>
 
             <div class="field">
                 <label for="descricao">Descrição</label>
-                <textarea id="descricao" name="descricao" rows="4" maxlength="200" required
-                    placeholder="máximo de caracteres(200)"><%= (form && form.descricao) || '' %></textarea>
+                <textarea id="descricao"
+                          name="descricao"
+                          rows="4"
+                          maxlength="200"
+                          required
+                          placeholder="máximo de caracteres(200)"><%= form.descricao || '' %></textarea>
                 <div class="hint"><span id="count">0</span>/200</div>
             </div>
 
             <div class="field">
+                <label for="deadline">Prazo de Entrega</label>
+                <input id="deadline"
+                       name="deadline"
+                       type="date"
+                       value="<%= form.deadline || '' %>">
+            </div>
+
+            <div class="field">
                 <label for="tech-select">Tecnologias que serão usadas</label>
+
                 <div class="select-wrapper">
                     <select id="tech-select">
                         <option value="" disabled selected>escolha pelo menos uma</option>
-                        <% (tecnologiasDisponiveis ||
-                            ['JavaScript','Node.js','React','TypeScript','Python','PostgreSQL']).forEach(function(tec){
-                            %>
-                            <option value="<%= tec %>">
-                                <%= tec %>
-                            </option>
-                            <% }) %>
+
+                        <% tecnologiasDisponiveis.forEach(function(tec){ %>
+                            <option value="<%= tec %>"><%= tec %></option>
+                        <% }) %>
                     </select>
                     <span class="chevron">▾</span>
                 </div>
-                <!-- Campo real enviado no POST (CSV) -->
-                <input type="hidden" name="tecnologias" id="tecnologiasHidden"
-                    value="<%= (form && form.tecnologias && form.tecnologias.join(',')) || '' %>">
+
+                <input type="hidden"
+                       name="tecnologias"
+                       id="tecnologiasHidden"
+                       value="<%= (form.tecnologias ? form.tecnologias.join(',') : '') %>">
             </div>
 
             <div class="field">
                 <label>Tecnologias já selecionadas</label>
                 <div id="chips" class="chips">
-                    <% if (form && form.tecnologias) { form.tecnologias.forEach(function(t){ %>
+                    <% if (form.tecnologias) { form.tecnologias.forEach(function(t){ %>
                         <span class="chip" data-val="<%= t %>">
-                            <%= t %><button type="button" class="remove" aria-label="remover">×</button>
+                            <%= t %>
+                            <button type="button" class="remove" aria-label="remover">×</button>
                         </span>
-                        <% }) } %>
+                    <% }) } %>
                 </div>
             </div>
 
             <% if (error) { %>
-                <p class="error">
-                    <%= error %>
-                </p>
-                <% } %>
+                <p class="error"><%= error %></p>
+            <% } %>
 
-                    <div class="actions">
-                        <button type="submit" class="primary">Publicar <span class="arrow">→</span></button>
-                    </div>
+            <div class="actions">
+                <button type="submit" class="primary">
+                    Publicar
+                    <iconify-icon
+                icon="pixelarticons:arrow-right"
+                class="arrow"
+                width="14"
+              ></iconify-icon>
+                </button>
+            </div>
         </form>
     </main>
 
@@ -86,17 +130,16 @@
             const chips = document.getElementById('chips');
             const hidden = document.getElementById('tecnologiasHidden');
 
-            // contador de caracteres
+            // contador
             if (textarea && count) {
                 const update = () => count.textContent = textarea.value.length;
                 textarea.addEventListener('input', update);
                 update();
             }
 
-            // estado local das tecnologias selecionadas
+            // estado local
             const current = new Set((hidden.value ? hidden.value.split(',') : []).filter(Boolean));
 
-            // render chips e sincroniza hidden
             const render = () => {
                 chips.innerHTML = '';
                 current.forEach(v => {
@@ -109,17 +152,13 @@
                 hidden.value = Array.from(current).join(',');
             };
 
-            // adiciona tecnologia
-            if (select) {
-                select.addEventListener('change', (e) => {
-                    const val = e.target.value;
-                    if (val) current.add(val);
-                    render();
-                    select.selectedIndex = 0; // volta para placeholder
-                });
-            }
+            select.addEventListener('change', (e) => {
+                const val = e.target.value;
+                if (val) current.add(val);
+                render();
+                select.selectedIndex = 0;
+            });
 
-            // remove chip
             chips.addEventListener('click', (e) => {
                 const btn = e.target.closest('.remove');
                 if (btn) {
@@ -128,7 +167,6 @@
                 }
             });
 
-            // validação no submit
             document.getElementById('pedidoForm').addEventListener('submit', (e) => {
                 if (current.size === 0) {
                     e.preventDefault();
@@ -139,6 +177,6 @@
             render();
         })();
     </script>
-</body>
 
+</body>
 </html>

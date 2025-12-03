@@ -1,13 +1,21 @@
 import { Router } from "express";
 import models from "../../models/index.js";
+import techIconMap from "../../utils/techIconMap.js";
 
 const router = Router();
 
-const { Developer, User, TechnologyStack, PortfolioItem, Certification } =
+const { Developer, User, TechnologyStack, PortfolioItem, Certification, Project } =
   models;
 
-router.get("/dashboard", (req, res) => {
-  res.render("develop/dashboard");
+router.get("/dashboard", async (req, res, next) => {
+  try {
+    const projects = await Project.findAll({
+      include: [{ model: models.Client, attributes: ["id", "companyName"] }],
+    });
+    res.render("develop/dashboard", { projects: projects.map(p => p.toJSON()), techIconMap });
+  } catch (err) {
+    next(err);
+  }
 });
 
 router.get("/edit-perfil", async (req, res, next) => {

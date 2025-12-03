@@ -10,19 +10,11 @@
     ></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-            <li>
-              <a href="/auth?type=login" style="color:inherit; text-decoration:none; display:flex; gap:8px; align-items:center;">
-                <iconify-icon icon="iconamoon:profile-bold" width="24"></iconify-icon>
-                <span>Perfil</span>
-              </a>
-            </li>
+           
   <body>
     <div class="horizontal">
       <div class="logo">
-        <img
-          src="https://via.placeholder.com/150x40/0E1525/FFFFFF?text=ContrataDev"
-          alt="Logo da ContrataDev"
-        />
+          <div class="logo"><img src="/images/logo.webp" alt="Logo da ContrataDev" /></div>
       </div>
     </div>
 
@@ -49,43 +41,62 @@
         <section class="content">
           <div>
             <div class="voltar">
-              <iconify-icon
-                icon="iconamoon:arrow-left-2"
-                width="20"
-              ></iconify-icon>
-              Voltar
+              <a href="javascript:history.back()" style="color:inherit; text-decoration:none; display:flex; gap:8px; align-items:center;">
+                <iconify-icon icon="iconamoon:arrow-left-2" width="20"></iconify-icon>
+                Voltar
+              </a>
             </div>
 
-            <h2>TÍTULO DA SOLICITAÇÃO</h2>
+            <h2><%= project && project.title ? project.title : 'TÍTULO DA SOLICITAÇÃO' %></h2>
 
-            <span class="valor">R$ 5.000,00</span>
+            <span class="valor"><%= project && project.budget ? ('R$ ' + project.budget.toFixed(2)) : 'Sem orçamento' %></span>
 
             <div class="desc">
               <p>
-                Descrição detalhada da solicitação. Lorem ipsum dolor sit amet,
-                consectetur adipiscing elit. Nullam auctor, nisl eu ultricies
-                lacinia, nunc nisl aliquam nisl, eu aliquam nisl nunc eu nisl.
+                <%= project && project.description ? project.description : 'Sem descrição disponível' %>
               </p>
             </div>
+
+            <% if (project && project.deadline) { %>
+              <div class="prazo">
+                <p><strong>Prazo:</strong> <%= new Date(project.deadline).toLocaleDateString() %></p>
+              </div>
+            <% } %>
 
             <div class="tecnologia">
               <p>Tecnologias que serão utilizadas:</p>
               <div class="tech">
-                <iconify-icon icon="logos:javascript" width="32"></iconify-icon>
-                <iconify-icon icon="logos:react" width="32"></iconify-icon>
-                <iconify-icon icon="logos:nodejs" width="32"></iconify-icon>
-                <div class="mais">
-                  Ver mais
-                  <iconify-icon icon="ic:round-plus" width="20"></iconify-icon>
-                </div>
+                <% if (typeof techIconMap !== 'undefined' && project && project.technologies) { %>
+                  <% project.technologies.split(',').filter(Boolean).forEach(function(t){ %>
+                    <% var iconName = techIconMap[t] || null; %>
+                    <% if (iconName) { %>
+                      <iconify-icon icon="<%= iconName %>" width="32" title="<%= t %>"></iconify-icon>
+                    <% } else { %>
+                      <span class="tech-chip"><%= t %></span>
+                    <% } %>
+                  <% }) %>
+                <% } else if (project && project.technologies) { %>
+                  <% project.technologies.split(',').filter(Boolean).forEach(function(t){ %>
+                    <span class="tech-chip"><%= t %></span>
+                  <% }) %>
+                <% } else { %>
+                  <p class="muted">Nenhuma tecnologia selecionada</p>
+                <% } %>
               </div>
             </div>
           </div>
-
           <div class="btn-container">
-            <a href="#" class="button">
-              <button>Aceitar</button>
-            </a>
+            <% if (canDelete) { %>
+              <form method="post" action="/client/solicitacoes/<%= project.id %>/delete" onsubmit="return confirm('Deseja realmente excluir esta solicitação?');">
+                <div class="button">
+                  <button type="submit">Excluir Solicitação</button>
+                </div>
+              </form>
+            <% } else { %>
+              <a href="#" class="button">
+                <button>Aceitar</button>
+              </a>
+            <% } %>
           </div>
         </section>
       </main>

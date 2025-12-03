@@ -51,22 +51,6 @@
             <p><strong>Faixa de orçamento</strong></p>
             <input type="text" value="<%= client && client.budgetRange ? client.budgetRange : '-' %>" readonly />
           </div>
-
-          <div class="projetos">
-            <h3>Projetos</h3>
-            <% if (client && client.Projects && client.Projects.length) { %>
-              <% client.Projects.forEach(function(p) { %>
-                <div class="projeto-card">
-                  <div>
-                    <p><%= p.title %></p>
-                    <p>Status: <%= p.status %></p>
-                  </div>
-                </div>
-              <% }) %>
-            <% } else { %>
-              <p class="muted">Nenhum projeto cadastrado</p>
-            <% } %>
-          </div>
         </div>
       </div>
     </div>

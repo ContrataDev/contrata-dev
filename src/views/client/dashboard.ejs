@@ -45,10 +45,10 @@
       <main class="main-content">
         <div class="header">
           <h1>Suas Solicitações</h1>
-          <button class="btn-criar">
+          <a href="/client/create" class="btn-criar">
             <iconify-icon icon="ic:round-plus" width="20"></iconify-icon>Criar
             sua Solicitação
-          </button>
+          </a>
         </div>
 
         <section class="section-status">
@@ -56,23 +56,40 @@
             <h2>Em Produção</h2>
           </div>
           <div class="cards-container">
-            <!-- Card -->
-            <div class="card">
-              <div class="header-card">
-                <p class="valor">Valor de Pagamento</p>
-                <p class="titulo">Título</p>
-              </div>
-              <p>Descrição</p>
-              <p>Requisitos</p>
-              <div class="tech-icons">
-                <iconify-icon icon="logos:javascript" width="24"></iconify-icon>
-                <iconify-icon
-                  icon="vscode-icons:file-type-html"
-                  width="25"
-                ></iconify-icon>
-              </div>
-            </div>
-            <!-- Repetir mais cards conforme criação e aramzenamento no banco de dados com o backend-->
+            <% if (client && client.Projects && client.Projects.length) { %>
+              <% client.Projects.forEach(function(p){ %>
+                <a href="/solicitacao/<%= p.id %>" style="text-decoration: none; color: inherit;">
+                  <div class="card">
+                    <div class="header-card" style="position:relative;">
+                      <p class="valor"><%= p.budget ? ('R$ ' + p.budget) : 'Sem orçamento' %></p>
+                      <% if (p.deadline) { %>
+                        <p class="prazo">Prazo: <%= new Date(p.deadline).toLocaleDateString() %></p>
+                      <% } %>
+                    </div>
+                    <p class="titulo"><%= p.title %></p>
+                    <p><%= p.description ? p.description : '' %></p>
+                    <div class="tech-icons">
+                      <% if (typeof techIconMap !== 'undefined' && p.technologies) { %>
+                        <% p.technologies.split(',').filter(Boolean).forEach(function(t){ %>
+                          <% var iconName = techIconMap[t] || null; %>
+                          <% if (iconName) { %>
+                            <iconify-icon icon="<%= iconName %>" width="24" title="<%= t %>"></iconify-icon>
+                          <% } else { %>
+                            <span class="tech-chip"><%= t %></span>
+                          <% } %>
+                        <% }) %>
+                      <% } else if (p.technologies) { %>
+                        <% p.technologies.split(',').filter(Boolean).forEach(function(t){ %>
+                          <span class="tech-chip"><%= t %></span>
+                        <% }) %>
+                      <% } %>
+                    </div>
+                  </div>
+                </a>
+              <% }) %>
+            <% } else { %>
+              <p class="muted">Nenhuma solicitação criada ainda. Clique em "Criar sua Solicitação" para começar.</p>
+            <% } %>
           </div>
         </section>
       </main>

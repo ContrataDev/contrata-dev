@@ -133,6 +133,17 @@ h2 {
 	flex-wrap: wrap;
 }
 
+.tech-chip {
+	background: #f7df1e;
+	color: #000;
+	font-weight: 700;
+	border-radius: 6px;
+	padding: 6px 10px;
+	display: inline-block;
+	margin-right: 6px;
+	font-size: 13px;
+}
+
 .mais {
 	display: flex;
 	align-items: center;

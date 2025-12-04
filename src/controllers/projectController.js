@@ -145,3 +145,32 @@ export async function recommendDevelopers(req, res, next) {
     next(createError(500, err.message));
   }
 }
+export async function getProjectsByUser(req, res, next) {
+  try {
+    const clientId = req.user?.dataValues.clientId;
+
+    if (!clientId) {
+      return next(createError(401, "Cliente não autenticado"));
+    }
+
+    const { status } = req.query;
+    const where = { clientId: clientId };
+    if (status) {
+      where.status = status;
+    }
+
+    const projects = await Project.findAll({
+      where,
+    });
+
+    if (!projects || projects.length === 0) {
+      return next(
+        createError(404, "Nenhum projeto encontrado para este cliente")
+      );
+    }
+
+    res.json(projects);
+  } catch (err) {
+    next(createError(500, err.message));
+  }
+}

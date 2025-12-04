@@ -4,6 +4,10 @@
 	box-sizing: border-box;
 }
 
+a {
+	text-decoration: none;
+}
+
 body {
 	font-family: inter;
 	background-color: #0e1525;
@@ -64,6 +68,11 @@ body {
 	iconify-icon {
 		margin-right: 5px;
 	}
+}
+
+
+.sidebar li a {
+	color: #797d89;
 }
 
 /*meio*/

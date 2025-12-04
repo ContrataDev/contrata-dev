@@ -25,7 +25,7 @@ router.get("/solicitacao/:id", async (req, res, next) => {
     const projectObj = project.toJSON();
     const canDelete = !!(req.user && projectObj.Client && projectObj.Client.userId && req.user.id === projectObj.Client.userId);
 
-    res.render("public/viewSoli", { project: projectObj, canDelete, techIconMap: (await import('../utils/techIconMap.js')).default });
+    res.render("public/viewSoli", { project: projectObj, canDelete, techIconMap: (await import('../../utils/techIconMap.js')).default });
   } catch (err) {
     next(err);
   }

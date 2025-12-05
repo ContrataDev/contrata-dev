@@ -125,24 +125,15 @@ export async function updateClientAvatar(req, res, next) {
     const { id } = req.params;
     const client = await Client.findByPk(id);
     if (!client) return next(createError(404, 'Cliente não encontrado'));
+    if (!req.file || !req.file.buffer) return next(createError(400, 'Arquivo não informado'));
 
-    if (!req.file) return next(createError(400, 'Arquivo não informado'));
+    const buffer = req.file.buffer;
+    const mime = req.file.mimetype || 'image/png';
 
-    const publicPath = `/uploads/avatars/${req.file.filename}`;
+    await client.update({ avatar: buffer, avatarMime: mime });
 
-    if (client.avatar && client.avatar.startsWith('/uploads/avatars/')) {
-      try {
-        const oldFilename = path.basename(client.avatar);
-        const oldPath = path.resolve(process.cwd(), 'public', 'uploads', 'avatars', oldFilename);
-        if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
-      } catch (err) {
-        console.warn('could not remove old client avatar', err.message || err);
-      }
-    }
-
-    await client.update({ avatar: publicPath });
-
-    res.json({ id: client.id, avatar: client.avatar });
+    const avatarUrl = `data:${mime};base64,${buffer.toString('base64')}`;
+    res.json({ id: client.id, avatarUrl });
   } catch (err) {
     next(createError(500, err.message));
   }

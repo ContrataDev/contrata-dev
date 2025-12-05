@@ -45,9 +45,24 @@ router.get("/edit-perfil", async (req, res, next) => {
       });
     }
 
-    // pass a plain object (not a Sequelize instance) so client-side JSON serialization
-    // includes associations like TechnologyStacks and PortfolioItems reliably
-    res.render("develop/edit-perfil", { developer: developer ? developer.toJSON() : null });
+    // prepare plain object for view; convert avatar blob to data URL if present
+    const devObj = developer ? developer.toJSON() : null;
+    if (developer && developer.get) {
+      const raw = developer.get('avatar');
+      const mime = developer.get('avatarMime') || 'image/png';
+      try {
+        if (raw && Buffer.isBuffer(raw)) {
+          devObj.avatar = `data:${mime};base64,${raw.toString('base64')}`;
+        } else if (typeof raw === 'string' && (raw.startsWith('data:') || raw.startsWith('/') || raw.startsWith('http')) ) {
+          // existing string URL or data URL - pass through
+          devObj.avatar = raw;
+        }
+      } catch (e) {
+        // leave avatar unset on error
+      }
+    }
+
+    res.render("develop/edit-perfil", { developer: devObj, techIconMap });
   } catch (err) {
     next(err);
   }
@@ -68,7 +83,21 @@ router.get("/perfil", async (req, res, next) => {
 
     // pass timestamp (query param t) so view can cache-bust avatar url
     const ts = req.query && req.query.t ? req.query.t : Date.now();
-    res.render("develop/perfil", { developer: developer ? developer.toJSON() : null, ts });
+    const devObj = developer ? developer.toJSON() : null;
+    if (developer && developer.get) {
+      const raw = developer.get('avatar');
+      const mime = developer.get('avatarMime') || 'image/png';
+      try {
+        if (raw && Buffer.isBuffer(raw)) {
+          devObj.avatar = `data:${mime};base64,${raw.toString('base64')}`;
+        } else if (typeof raw === 'string' && (raw.startsWith('data:') || raw.startsWith('/') || raw.startsWith('http')) ) {
+          devObj.avatar = raw;
+        }
+      } catch (e) {
+        // ignore
+      }
+    }
+    res.render("develop/perfil", { developer: devObj, ts, techIconMap });
   } catch (err) {
     next(err);
   }

@@ -13,7 +13,19 @@ document.addEventListener('DOMContentLoaded', () => {
   function makeTechChip(text) {
     const chip = document.createElement('div');
     chip.className = 'tech-chip';
-    chip.textContent = text;
+    // allow passing object {name, icon}
+    const name = typeof text === 'string' ? text : (text && text.name) || '';
+    const icon = (text && text.icon) || null;
+    if (icon) {
+      const ic = document.createElement('iconify-icon');
+      ic.setAttribute('icon', icon);
+      ic.setAttribute('width', '16');
+      ic.style.marginRight = '8px';
+      chip.appendChild(ic);
+    }
+    const txt = document.createElement('span');
+    txt.textContent = name;
+    chip.appendChild(txt);
     const rem = document.createElement('button');
     rem.style.marginLeft = '8px';
     rem.style.background = 'transparent';
@@ -24,6 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
     rem.addEventListener('click', () => chip.remove());
     chip.appendChild(rem);
     return chip;
+  }
+
+  // helper to check existing chip values
+  function hasTech(name) {
+    return Array.from(document.querySelectorAll('#techList .tech-chip span')).some(s => s.textContent.trim() === name);
   }
 
   function makeProjectItem(item = {}) {
@@ -66,10 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
   if (developerData) {
     // render technology stacks if not already (server already inserted some)
     if (Array.isArray(developerData.TechnologyStacks)) {
-      // clear and render
       if (techListEl) techListEl.innerHTML = '';
       developerData.TechnologyStacks.forEach((ts) => {
-        if (techListEl) techListEl.appendChild(makeTechChip(ts.name || ts));
+        const name = ts.name || ts;
+        const icon = (window.__TECH_ICON_MAP && window.__TECH_ICON_MAP[name]) || null;
+        if (techListEl) techListEl.appendChild(makeTechChip({ name, icon }));
       });
     }
 
@@ -109,10 +127,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   addTechBtn?.addEventListener('click', (e) => {
     e.preventDefault();
-    const name = prompt('Nome da tecnologia (ex: JavaScript, React):');
-    if (name) {
-      techListEl.appendChild(makeTechChip(name));
+    // toggle tech picker
+    const picker = document.getElementById('techPicker');
+    if (!picker) {
+      // fallback to prompt
+      const name = prompt('Nome da tecnologia (ex: JavaScript, React):');
+      if (name) techListEl.appendChild(makeTechChip(name));
+      return;
     }
+    picker.classList.toggle('hidden');
+    picker.setAttribute('aria-hidden', picker.classList.contains('hidden'));
+  });
+
+  // clicking a tech in picker adds it as chip
+  document.addEventListener('click', (e) => {
+    const target = e.target.closest && e.target.closest('.tech-picker-item');
+    if (!target) return;
+    const name = target.getAttribute('data-tech');
+    const icon = (window.__TECH_ICON_MAP && window.__TECH_ICON_MAP[name]) || null;
+    if (!hasTech(name)) {
+      techListEl.appendChild(makeTechChip({ name, icon }));
+    }
+    // hide picker after selection
+    const picker = document.getElementById('techPicker');
+    if (picker) { picker.classList.add('hidden'); picker.setAttribute('aria-hidden', 'true'); }
   });
 
   addProjectBtn?.addEventListener('click', (e) => {
@@ -154,10 +192,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const phone = document.querySelector('input[name="phone"]')?.value || '';
     const country = document.querySelector('input[name="country"]')?.value || '';
 
-    const techs = Array.from(document.querySelectorAll('#techList .tech-chip'))
-      .map((el) => el.firstChild && el.firstChild.textContent ? el.firstChild.textContent.trim() : el.textContent.trim())
-      .map((t) => t.replace('✕', '').trim())
-      .filter(Boolean);
+    const techs = Array.from(document.querySelectorAll('#techList .tech-chip')).map((el) => {
+      const nameSpan = el.querySelector('span');
+      const raw = nameSpan ? nameSpan.textContent : el.textContent;
+      return raw.replace('✕', '').trim();
+    }).filter(Boolean);
 
     const projects = Array.from(document.querySelectorAll('#projectsContainer .project-item')).map((el) => {
       const title = el.querySelector('.proj-title')?.textContent || '';
@@ -185,9 +224,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         // merge returned avatar (optionally) into developerData so preview is consistent
         const updatedDev = await avRes.json().catch(() => null);
-        if (updatedDev && updatedDev.avatar) {
-          // ensure the form will send the latest avatar if needed, and update UI
-          // do not display filename in UI per design
+        if (updatedDev && updatedDev.avatarUrl) {
+          // update preview with returned data URL so UI reflects saved avatar
+          if (avatarPreviewEl) {
+            avatarPreviewEl.innerHTML = '';
+            const img = document.createElement('img');
+            img.src = updatedDev.avatarUrl;
+            img.alt = 'avatar preview';
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.borderRadius = '50%';
+            img.style.objectFit = 'cover';
+            avatarPreviewEl.appendChild(img);
+          }
         }
       }
 

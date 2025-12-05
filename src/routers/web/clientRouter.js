@@ -81,7 +81,19 @@ router.get('/edit-perfil', async (req, res, next) => {
       client = await Client.findByPk(client.id, { include: [{ model: User, attributes: ['name','email'] }, { model: Project }] });
     }
 
-    res.render('client/edit-perfil', { client: client ? client.toJSON() : null });
+      const clientObj = client ? client.toJSON() : null;
+      if (client && client.get) {
+        const raw = client.get('avatar');
+        const mime = client.get('avatarMime') || 'image/png';
+        try {
+          if (raw && Buffer.isBuffer(raw)) {
+            clientObj.avatar = `data:${mime};base64,${raw.toString('base64')}`;
+          } else if (typeof raw === 'string' && (raw.startsWith('data:') || raw.startsWith('/') || raw.startsWith('http'))) {
+            clientObj.avatar = raw;
+          }
+        } catch (e) {}
+      }
+      res.render('client/edit-perfil', { client: clientObj });
   } catch (err) { next(err); }
 });
 
@@ -90,7 +102,19 @@ router.get('/perfil', async (req, res, next) => {
     const userId = req.user?.id;
     const client = await Client.findOne({ where: { userId }, include: [{ model: User, attributes: ['name','email'] }, { model: Project }] });
     const ts = req.query && req.query.t ? req.query.t : Date.now();
-    res.render('client/perfil', { client: client ? client.toJSON() : null, ts });
+      const clientObj = client ? client.toJSON() : null;
+      if (client && client.get) {
+          const raw = client.get('avatar');
+          const mime = client.get('avatarMime') || 'image/png';
+          try {
+            if (raw && Buffer.isBuffer(raw)) {
+              clientObj.avatar = `data:${mime};base64,${raw.toString('base64')}`;
+            } else if (typeof raw === 'string' && (raw.startsWith('data:') || raw.startsWith('/') || raw.startsWith('http'))) {
+              clientObj.avatar = raw;
+            }
+          } catch(e) {}
+        }
+      res.render('client/perfil', { client: clientObj, ts, techIconMap });
   } catch (err) { next(err); }
 });
 

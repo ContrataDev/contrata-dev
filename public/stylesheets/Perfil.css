@@ -65,10 +65,21 @@ body {
 }
 
 .tech-icons {
-	margin-top: 5px;
+	margin-top: 8px;
 	display: flex;
-	justify-content: center;
+	flex-wrap: wrap;
 	gap: 10px;
+	justify-content: center;
+}
+
+.tech-chip {
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 10px;
+  background:#0f1724;
+  border-radius:8px;
+  color:#fff;
 }
 
 .btn-editar {
@@ -126,3 +137,13 @@ iconify-icon {
 	align-items: center;
 	display: flex;
 }
+
+/* Small project-styled buttons (used in edit pages) */
+.button { padding:8px 12px; border-radius:8px; cursor:pointer; border:none; font-size:14px; }
+.button.small { padding:8px 12px; font-size:14px; border-radius:8px; background-color: rgba(63,63,70,0.24); color: #fff; }
+.button.small:hover { background-color: rgba(63,63,70,0.34); transform: translateY(-2px); }
+.button.small:focus { outline: 2px solid rgba(217,119,6,0.14); outline-offset: 2px; }
+.button.outline.small { background: transparent; color: #c9c9c9; border: 1px solid rgba(255,255,255,0.04); }
+
+/* keep compatibility with existing btn-editar visual */
+.btn-editar { display:inline-block; }

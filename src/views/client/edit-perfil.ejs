@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/stylesheets/Perfil.css" />
+    <link rel="stylesheet" href="/stylesheets/Perfil-edit.css" />
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js" await></script>
     <title>Editar perfil - Cliente</title>
   </head>
@@ -20,7 +20,7 @@
         <div class="col-esquerda">
           <div class="avatar big-avatar" id="avatarPreview">
             <% if (client && client.avatar) { %>
-              <img src="<%= client.avatar %>" alt="avatar" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />
+              <img src="<%= client.avatar %>" alt="" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />
             <% } else { %>
               <div style="width:100%; height:100%; border-radius:50%; background:#d9d9d9;"></div>
             <% } %>

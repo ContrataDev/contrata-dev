@@ -66,6 +66,18 @@ document.addEventListener('DOMContentLoaded', () => {
           const err = await avRes.json().catch(() => ({}));
           return alert(err.error || 'Erro ao fazer upload do avatar');
         }
+        const updatedClient = await avRes.json().catch(() => null);
+        if (updatedClient && updatedClient.avatarUrl && avatarPreviewEl) {
+          avatarPreviewEl.innerHTML = '';
+          const img = document.createElement('img');
+          img.src = updatedClient.avatarUrl;
+          img.alt = 'avatar preview';
+          img.style.width = '100%';
+          img.style.height = '100%';
+          img.style.borderRadius = '50%';
+          img.style.objectFit = 'cover';
+          avatarPreviewEl.appendChild(img);
+        }
       }
 
       const res = await fetch(`/api/v1/clients/${clientId}`, {

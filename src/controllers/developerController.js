@@ -181,27 +181,17 @@ export async function updateDeveloperAvatar(req, res, next) {
     const { id } = req.params;
     const developer = await Developer.findByPk(id);
     if (!developer) return next(createError(404, 'Desenvolvedor não encontrado'));
+    if (!req.file || !req.file.buffer) return next(createError(400, 'Arquivo não informado'));
 
-    if (!req.file) return next(createError(400, 'Arquivo não informado'));
+    // save binary content and mime type into the DB
+    const buffer = req.file.buffer;
+    const mime = req.file.mimetype || 'image/png';
 
-    // build public url path for stored file
-    const publicPath = `/uploads/avatars/${req.file.filename}`;
+    await developer.update({ avatar: buffer, avatarMime: mime });
 
-    // optionally remove previous avatar file (if it was stored locally)
-    if (developer.avatar && developer.avatar.startsWith('/uploads/avatars/')) {
-      try {
-        const oldFilename = path.basename(developer.avatar);
-        const oldPath = path.resolve(process.cwd(), 'public', 'uploads', 'avatars', oldFilename);
-        if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
-      } catch (err) {
-        // ignore errors while deleting old file
-        console.warn('could not remove old avatar', err.message || err);
-      }
-    }
-
-    await developer.update({ avatar: publicPath });
-
-    res.json({ id: developer.id, avatar: developer.avatar });
+    // return a data URL so front-end can update preview immediately
+    const avatarUrl = `data:${mime};base64,${buffer.toString('base64')}`;
+    res.json({ id: developer.id, avatarUrl });
   } catch (err) {
     next(createError(500, err.message));
   }

@@ -32,7 +32,7 @@
         <div class="col-esquerda">
           <div class="avatar">
             <% if (developer && developer.avatar) { %>
-              <img src="<%= developer.avatar %><%= ts ? ('?t=' + ts) : '' %>" alt="avatar" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />
+              <img src="<%= developer.avatar %>" alt="" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />
             <% } else { %>
               <!--aqui vai ficar a img de perfil do usuario  -->
             <% } %>
@@ -42,9 +42,18 @@
           <div class="tecnologias">
             <p>Tecnologias</p>
             <div class="tech-icons">
-              <% if (developer && developer.TechnologyStacks && developer.TechnologyStacks.length) { %>
+              <% if (typeof techIconMap !== 'undefined' && developer && developer.TechnologyStacks && developer.TechnologyStacks.length) { %>
                 <% developer.TechnologyStacks.forEach(function(ts){ %>
-                  <div class="tech-item"><%= ts.name %></div>
+                  <% var name = ts.name || ts; var icon = techIconMap[name] || null; %>
+                  <% if (icon) { %>
+                    <iconify-icon icon="<%= icon %>" width="28" title="<%= name %>"></iconify-icon>
+                  <% } else { %>
+                    <span class="tech-chip"><%= name %></span>
+                  <% } %>
+                <% }) %>
+              <% } else if (developer && developer.TechnologyStacks && developer.TechnologyStacks.length) { %>
+                <% developer.TechnologyStacks.forEach(function(ts){ %>
+                  <span class="tech-chip"><%= ts.name || ts %></span>
                 <% }) %>
               <% } else { %>
                 <p class="muted">Nenhuma tecnologia cadastrada</p>

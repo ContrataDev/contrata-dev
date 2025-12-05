@@ -73,7 +73,18 @@ body {
 
 .sidebar li a {
 	color: #797d89;
+
 }
+
+.sidebar li:hover {
+	color: #fff;
+}
+
+.sidebar a:hover {
+	color: #fff;
+}
+
+
 
 /*meio*/
 

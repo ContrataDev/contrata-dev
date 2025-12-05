@@ -24,14 +24,16 @@
         <nav>
           <ul>
             <li>
-              <iconify-icon icon="tabler:home" width="24"></iconify-icon>Home
+              <a href="/" style="color:inherit; text-decoration:none; display:flex; gap:8px; align-items:center;">
+                <iconify-icon icon="tabler:home" width="24"></iconify-icon>
+                <span>Home</span>
+              </a>
             </li>
             <li>
-              <iconify-icon
-                icon="iconamoon:profile-bold"
-                width="24"
-              ></iconify-icon
-              >Perfil
+              <a href="/client/perfil" style="color:inherit; text-decoration:none; display:flex; gap:8px; align-items:center;">
+                <iconify-icon icon="iconamoon:profile-bold" width="24"></iconify-icon>
+                <span>Perfil</span>
+              </a>
             </li>
           </ul>
         </nav>
@@ -63,27 +65,67 @@
               </div>
             <% } %>
 
-            <div class="tecnologia">
-              <p>Tecnologias que serão utilizadas:</p>
-              <div class="tech">
-                <% if (typeof techIconMap !== 'undefined' && project && project.technologies) { %>
-                  <% project.technologies.split(',').filter(Boolean).forEach(function(t){ %>
-                    <% var iconName = techIconMap[t] || null; %>
-                    <% if (iconName) { %>
-                      <iconify-icon icon="<%= iconName %>" width="32" title="<%= t %>"></iconify-icon>
-                    <% } else { %>
+            <div class="tecnologia-and-action" style="margin-top:20px; display:flex; align-items:center; justify-content:space-between; gap:12px;">
+              <div class="tecnologia" style="flex:1;">
+                <p>Tecnologias que serão utilizadas:</p>
+                <div class="tech">
+                  <% if (typeof techIconMap !== 'undefined' && project && project.technologies) { %>
+                    <% project.technologies.split(',').filter(Boolean).forEach(function(t){ %>
+                      <% var iconName = techIconMap[t] || null; %>
+                      <% if (iconName) { %>
+                        <iconify-icon icon="<%= iconName %>" width="32" title="<%= t %>"></iconify-icon>
+                      <% } else { %>
+                        <span class="tech-chip"><%= t %></span>
+                      <% } %>
+                    <% }) %>
+                  <% } else if (project && project.technologies) { %>
+                    <% project.technologies.split(',').filter(Boolean).forEach(function(t){ %>
                       <span class="tech-chip"><%= t %></span>
-                    <% } %>
-                  <% }) %>
-                <% } else if (project && project.technologies) { %>
-                  <% project.technologies.split(',').filter(Boolean).forEach(function(t){ %>
-                    <span class="tech-chip"><%= t %></span>
-                  <% }) %>
-                <% } else { %>
-                  <p class="muted">Nenhuma tecnologia selecionada</p>
+                    <% }) %>
+                  <% } else { %>
+                    <p class="muted">Nenhuma tecnologia selecionada</p>
+                  <% } %>
+                </div>
+              </div>
+
+              <div class="tecnologia-action" style="flex:0 0 auto;">
+                <% if (canDelete) { %>
+                  <a href="/client/applieds?projectId=<%= project && project.id ? project.id : '' %>" class="button" style="text-decoration:none;">
+                    <button type="button">Ver candidatos</button>
+                  </a>
                 <% } %>
               </div>
             </div>
+            
+            <% if (acceptedDevs && acceptedDevs.length) { %>
+              <div class="accepted-devs" style="margin-top:16px;">
+                <h3>Desenvolvedor(es) Aceito(s)</h3>
+                <div class="accepted-list" style="display:flex; gap:12px; flex-wrap:wrap;">
+                  <% acceptedDevs.forEach(function(d){ %>
+                    <a href="/developer/<%= d.id %>" style="text-decoration:none; color:inherit; display:flex; gap:8px; align-items:center;">
+                      <div style="width:48px; height:48px; border-radius:50%; overflow:hidden; background:#eee;">
+                        <% if (d.avatar) { %>
+                          <img src="<%= d.avatar %>" style="width:48px; height:48px; object-fit:cover;" />
+                        <% } %>
+                      </div>
+                      <div>
+                        <div><strong><%= d.name %></strong></div>
+                        <div style="font-size:0.9rem; color:#666;">
+                          <% (d.techs||[]).slice(0,4).forEach(function(t){ %>
+                            <% var name = (t||'').trim(); var iconName = (typeof techIconMap !== 'undefined' && techIconMap[name]) ? techIconMap[name] : null; %>
+                            <% if (iconName) { %>
+                              <iconify-icon icon="<%= iconName %>" width="20" title="<%= name %>"></iconify-icon>
+                            <% } else { %>
+                              <span class="tech-chip"><%= name %></span>
+                            <% } %>
+                          <% }) %>
+                        </div>
+                      </div>
+                    </a>
+                  <% }) %>
+                </div>
+              </div>
+            <% } %>
           </div>
           <div class="btn-container">
             <% if (canDelete) { %>
@@ -93,9 +135,12 @@
                 </div>
               </form>
             <% } else { %>
-              <a href="#" class="button">
-                <button>Aceitar</button>
-              </a>
+              <form method="post" action="/develop/apply" style="display:inline-block;">
+                <input type="hidden" name="projectId" value="<%= project && project.id ? project.id : '' %>">
+                <div class="button">
+                  <button type="submit">Aceitar</button>
+                </div>
+              </form>
             <% } %>
           </div>
         </section>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Contrata Dev - Aceitaram Minha Proposta</title>
+
+    <link rel="stylesheet" href="/stylesheets/applied.css">
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+</head>
+
+<body>
+
+    <div class="layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <img src="/images/logo.webp" class="sidebar-logo">
+
+            <a href="/client/dashboard" class="side-item">
+                <iconify-icon icon="mingcute:home-2-line"></iconify-icon>
+                Home
+            </a>
+
+            <a href="/client/perfil" class="side-item">
+                <iconify-icon icon="ph:user"></iconify-icon>
+                Perfil
+            </a>
+        </aside>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="content">
+            <a href="javascript:history.back()" class="back-btn">
+                <iconify-icon icon="mingcute:left-line"></iconify-icon>
+                Voltar
+            </a>
+
+            <h2 class="page-title">pessoas que aceitaram minha proposta</h2>
+
+            <section class="dev-list">
+
+                <% if (devs && devs.length > 0) { %>
+
+                    <% devs.forEach(dev => { %>
+                        <div class="dev-card">
+
+                            <a href="/developer/<%= dev.id %>" style="color:inherit; text-decoration:none; display:flex; flex:1;">
+                              <div class="dev-left">
+                                  <div class="avatar">
+                                    <% if (dev.avatar) { %>
+                                      <img src="<%= dev.avatar %>" alt="" style="border-radius:50%; object-fit:cover;" />
+                                    <% } %>
+                                  </div>
+
+                                  <div class="dev-info">
+                                      <p class="dev-name"><%= dev.name %></p>
+
+                                                                            <div class="tech-row">
+                                                                                    <% (dev.techs||[]).forEach(function(t){ %>
+                                                                                        <% var name = (t||'').trim(); var iconName = (typeof techIconMap !== 'undefined' && techIconMap[name]) ? techIconMap[name] : null; %>
+                                                                                        <% if (iconName) { %>
+                                                                                            <iconify-icon icon="<%= iconName %>" width="20" title="<%= name %>"></iconify-icon>
+                                                                                        <% } else { %>
+                                                                                            <span class="tech-chip"><%= name %></span>
+                                                                                        <% } %>
+                                                                                    <% }) %>
+                                                                            </div>
+                                  </div>
+                              </div>
+                            </a>
+
+                            <div class="actions">
+                                <form action="/client/recusar" method="post" style="display:inline-block;">
+                                    <input type="hidden" name="proposalId" value="<%= dev.proposalId %>">
+                                    <input type="hidden" name="projectId" value="<%= project && project.id ? project.id : '' %>">
+                                    <button class="btn reject">Recusar</button>
+                                </form>
+                                <form action="/client/aceitar" method="post" style="display:inline-block;">
+                                    <input type="hidden" name="proposalId" value="<%= dev.proposalId %>">
+                                    <input type="hidden" name="projectId" value="<%= project && project.id ? project.id : '' %>">
+                                    <button class="btn accept">Aceitar</button>
+                                </form>
+                            </div>
+                        </div>
+                    <% }) %>
+
+                <% } else { %>
+
+                    <p class="empty">Nenhum desenvolvedor aceitou sua proposta ainda.</p>
+
+                <% } %>
+
+            </section>
+        </main>
+    </div>
+
+</body>
+
+</html>

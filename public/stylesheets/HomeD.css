@@ -66,6 +66,11 @@ body {
 	}
 }
 
+.sidebar li:hover {
+	color: #fff;
+}
+
+
 /*meio*/
 
 .main-content {

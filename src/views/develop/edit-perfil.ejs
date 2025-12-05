@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/stylesheets/Perfil.css" />
+    <link rel="stylesheet" href="/stylesheets/Perfil-edit.css" />
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js" await></script>
     <title>Editar perfil - Contrata-Dev</title>
   </head>
@@ -21,7 +21,7 @@
         <div class="col-esquerda">
           <div class="avatar big-avatar" id="avatarPreview">
             <% if (developer && developer.avatar) { %>
-              <img src="<%= developer.avatar %>" alt="avatar" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />
+              <img src="<%= developer.avatar %>" alt="" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />
             <% } else { %>
               <!-- default placeholder -->
               <div style="width:100%; height:100%; border-radius:50%; background:#d9d9d9;"></div>
@@ -40,7 +40,19 @@
             <div id="techList" class="tech-icons">
               <!-- client-side will render existing technology chips with remove buttons -->
             </div>
-            <a id="addTech" href="#" class="add-link">adicionar tecnologia +</a>
+            <div style="margin-top:8px; position:relative;">
+              <button id="addTech" type="button" class="button outline small">adicionar tecnologia +</button>
+              <div id="techPicker" class="tech-picker hidden" aria-hidden="true">
+                <% if (typeof techIconMap !== 'undefined') { %>
+                  <% Object.keys(techIconMap).forEach(function(name){ %>
+                    <button type="button" class="tech-picker-item" data-tech="<%= name %>">
+                      <iconify-icon icon="<%= techIconMap[name] %>" width="18"></iconify-icon>
+                      <span class="tech-name"><%= name %></span>
+                    </button>
+                  <% }) %>
+                <% } %>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -64,7 +76,7 @@
 
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <div style="flex:1"></div>
-            <a id="addProjectBtn" href="#" class="add-link">adicionar projeto +</a>
+            <button id="addProjectBtn" type="button" class="button outline small">adicionar projeto +</button>
           </div>
 
           <div id="projectsContainer">
@@ -85,6 +97,10 @@
       // use unescaped JSON output so the client receives valid JS objects
       window.__DEVELOPER_ID = <%- JSON.stringify(developer ? developer.id : null) %>;
       window.__DEVELOPER_DATA = <%- JSON.stringify(developer ? developer : null) %>;
+    </script>
+    <script>
+      // expose techIconMap to client-side script
+      window.__TECH_ICON_MAP = <%- JSON.stringify(techIconMap || {}) %>;
     </script>
     <script src="/javascripts/developer-edit.js"></script>
   </body>

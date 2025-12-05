@@ -81,7 +81,7 @@ body {
 	font-weight: 600;
 }
 
-.tecnologias.large { width: 100%; max-width: 420px; text-align: left; }
+.tecnologias.large { width: 100%; max-width: 420px; text-align: center; }
 .tech-chip {
 	display:inline-block;
 	padding: 8px 12px;
@@ -92,10 +92,47 @@ body {
 	font-weight: 500;
 }
 
-.add-link { display:inline-block; margin-top:8px; color:#c9c9c9; text-decoration:none; cursor:pointer; }
+.add-link { 
+	display:inline-block; 
+	margin-top:8px; 
+	cursor:pointer; 
+	text-decoration: none;
+	color:#c9c9c9;
+	border:1px solid rgba(255,255,255,0.04);
+	padding:6px 12px; 
+	border-radius:8px;
+}
+
+.button.small { padding:8px 12px; font-size:14px; border-radius:8px; }
+.button.ghost { background: transparent; border:1px solid rgba(255,255,255,0.04); color:#c9c9c9; }
+
+/* Project-standard small button (match .btn-editar visual) */
+.button.small {
+	background-color: rgba(63,63,70,0.24);
+	color: #fff;
+	border: none;
+	display: inline-block;
+	vertical-align: middle;
+	box-shadow: none;
+}
+.button.small:hover {
+	background-color: rgba(63,63,70,0.34);
+	transform: translateY(-2px);
+}
+.button.small:focus {
+	outline: 2px solid rgba(217,119,6,0.14);
+	outline-offset: 2px;
+}
+
+/* variant: outline small to behave like project outline */
+.button.outline.small {
+	background: transparent;
+	color: #c9c9c9;
+	border: 1px solid rgba(255,255,255,0.04);
+}
 
 .right-top { display:flex; flex-direction:column; gap:18px; }
-.top-box .row-fields { display:flex; gap:16px; }
+.top-box .row-fields { display:flex; flex-direction: column; gap:16px; }
 .top-box .field { flex:1; display:flex; flex-direction:column; gap:6px; }
 
 .project-item { display:flex; align-items:center; gap:16px; margin-top:12px; }
@@ -117,9 +154,39 @@ body {
 .tech-icons {
 	margin-top: 5px;
 	display: flex;
-	justify-content: center;
+	justify-content: flex-start;
+	flex-wrap: wrap;
 	gap: 10px;
 }
+
+.tech-chip {
+	display:inline-flex;
+	align-items:center;
+	gap:6px;
+	padding:6px 10px;
+	background:#0f1724;
+	border-radius:8px;
+	color:#fff;
+}
+
+.tech-picker {
+	position:absolute;
+	top:38px;
+	left:0;
+	background:#0f1724;
+	border:1px solid rgba(255,255,255,0.04);
+	padding:8px;
+	border-radius:8px;
+	max-height:220px;
+	overflow:auto;
+	box-shadow:0 8px 20px rgba(0,0,0,0.5);
+	z-index:40;
+	min-width:220px;
+}
+.tech-picker.hidden { display:none; }
+.tech-picker-item { display:flex; align-items:center; gap:8px; padding:6px 8px; background:transparent; border:none; color:#c9c9c9; width:100%; text-align:left; cursor:pointer; border-radius:6px; }
+.tech-picker-item:hover { background:rgba(255,255,255,0.03); color:#fff; }
+.tech-name { margin-left:4px; }
 
 .btn-editar {
 	background-color: #3f3f4641;

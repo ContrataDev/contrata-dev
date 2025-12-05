@@ -20,7 +20,7 @@
         <div class="col-esquerda">
           <div class="avatar">
             <% if (client && client.avatar) { %>
-              <img src="<%= client.avatar %><%= ts ? ('?t=' + ts) : '' %>" alt="avatar" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />
+              <img src="<%= client.avatar %>" alt="" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />
             <% } else { %>
               <!-- no avatar -->
             <% } %>

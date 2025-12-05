@@ -4,7 +4,6 @@ const techIconMap = {
   React: 'logos:react',
   TypeScript: 'logos:typescript-icon',
   Python: 'logos:python',
-  PostgreSQL: 'vscode-icons:file-type-postgresql',
   HTML: 'vscode-icons:file-type-html',
   CSS: 'vscode-icons:file-type-css',
   Docker: 'logos:docker',

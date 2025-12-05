@@ -42,7 +42,7 @@ app.use(function (req, res, next) {
 });
 
 // error handler
-app.use(function (err, req, res) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
@@ -57,11 +57,9 @@ app.use(function (err, req, res) {
     await sequelize.authenticate();
     console.log("✅ Conexão com o banco estabelecida!");
 
-    if (process.env.NODE_ENV == "development") {
-      await sequelize.sync({ alter: true });
-    } else {
-      await sequelize.sync();
-    }
+    // Avoid automatic ALTER operations at startup which can fail on shared/hosted DBs.
+    // Use migrations for schema changes instead. Keep sync without `alter`.
+    await sequelize.sync();
 
     console.log("✅ Tabelas sincronizadas!");
   } catch (err) {

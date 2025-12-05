@@ -133,6 +133,32 @@ h2 {
 	flex-wrap: wrap;
 }
 
+/* container to position the 'Ver candidatos' button to the right of the tech list */
+.tecnologia-and-action {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+}
+
+.tecnologia-action .button {
+	display: inline-flex;
+	align-items: center;
+}
+
+@media (max-width: 768px) {
+	.tecnologia-and-action {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	.tecnologia-action {
+		width: 100%;
+		display: flex;
+		justify-content: flex-start;
+		margin-top: 10px;
+	}
+}
+
 .tech-chip {
 	background: #f7df1e;
 	color: #000;
@@ -142,6 +168,13 @@ h2 {
 	display: inline-block;
 	margin-right: 6px;
 	font-size: 13px;
+}
+
+/* Small spacing for accepted developers' tech icons/chips */
+.accepted-list .tech-chip,
+.accepted-list iconify-icon {
+	margin-right: 8px;
+	margin-bottom: 6px;
 }
 
 .mais {

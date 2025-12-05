@@ -13,7 +13,8 @@ Client.init(
   {
     userId: { type: DataTypes.UUID, allowNull: false },
     companyName: DataTypes.STRING,
-    avatar: DataTypes.STRING,
+    avatar: DataTypes.BLOB('long'),
+    avatarMime: DataTypes.STRING,
     budgetRange: DataTypes.STRING,
   },
   {

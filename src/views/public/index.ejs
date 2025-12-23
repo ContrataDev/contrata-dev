@@ -1,132 +1,137 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/stylesheets/land.css" />
     <script defer src="/javascripts/index.js"></script>
     <title>Contrata-Dev</title>
-    <style>
-      /* controle de exibição */
-      .section {
-        display: none;
-      }
+</head>
 
-      .section.active {
-        display: flex;
-      }
-    </style>
-  </head>
-
-  <body>
+<body>
     <header>
-      <a href="/" class="logo">
-        <img src="/images/logo.png" alt="Logo da Contrata-Dev" />
-      </a>
-      <nav class="navbar">
-        <ul>
-          <li>
-            <a
-              href="#"
-              class="nav-link active"
-              id="btnContratar"
-              data-page="contratar"
-              >Eu quero Contratar</a
-            >
-          </li>
-          <li>
-            <a href="#" class="nav-link" id="btnTrabalhar" data-page="trabalhar"
-              >Eu quero Trabalhar</a
-            >
-          </li>
-        </ul>
-      </nav>
-      <div class="buttons-logon">
-        <a href="/auth?type=login">Entrar</a>
-        <a href="/auth?type=cadastro" id="signin">Cadastre-se</a>
-      </div>
+        <a href="/" class="logo">
+            <img src="/images/logo.png" alt="Logo da Contrata-Dev" />
+        </a>
+        <nav class="navbar">
+            <ul>
+                <li><a href="#hero" class="nav-link active">Eu quero Contratar</a></li>
+                <li><a href="#features" class="nav-link">Funcionalidades</a></li>
+            </ul>
+        </nav>
+        <div class="buttons-logon">
+            <a href="/auth?type=login">Entrar</a>
+            <a href="/auth?type=cadastro" id="signin">Cadastre-se</a>
+        </div>
     </header>
 
     <main>
-      <!-- Seção Quero Trabalhar -->
-      <section id="sectionTrabalhar" class="section">
-        <div class="descricao">
-          <h1>
-            <span class="destac-text"
-              >Sua carreira, seu ritmo, seu sucesso</span
-            >
-            Transforme seu talento em liberdade
-          </h1>
-          <p>
-            Descubra o poder de trabalhar por conta própria. O mercado de
-            freelancers nunca esteve tão favorável. Ser freelancer é ter
-            liberdade para escolher seus projetos, trabalhar de onde quiser e
-            conquistar a independência financeira que sempre sonhou. Aqui, você
-            é o dono do seu tempo e pode transformar suas habilidades em
-            oportunidades reais.
-          </p>
-          <div class="buttons">
-            <a href="/auth?type=login" id="trabalhar"
-              >Eu Quero Trabalhar Como Freelancer</a
-            >
-            <a href="/auth?type=sign-in"
-              >Você quer contratar?
-              <iconify-icon
-                icon="pixelarticons:arrow-right"
-                width="24"
-              ></iconify-icon>
-            </a>
-          </div>
-        </div>
-        <div>
-          <img src="/images/tunb.png" alt="pessoa mexendo em um computador" />
-        </div>
-      </section>
+        <section id="hero" class="hero-section">
+            <div class="badge">
+                <iconify-icon icon="ph:sparkle-fill" style="color: #EE6105;"></iconify-icon>
+                A plataforma Perfeita para começar sua carreira
+            </div>
+            
+            <h1>Conectamos <span class="destac-text">devs iniciantes</span> a oportunidades reais</h1>
 
-      <!-- Seção Quero Contratar -->
-      <section id="sectionContratar" class="section active">
-        <div class="left">
-          <div>
-            <img src="/images/contract.webp" alt="" />
-          </div>
-        </div>
-        <div class="right">
-          <div>
-            <h1>
-              <span class="destac-text"
-                >O talento que você precisa, no momento certo</span
-              ><br />
-              Encontre o profissional certo para o seu projeto
-            </h1>
-            <p>
-              Precisa de alguém qualificado e pronto para entregar resultados?
-              Aqui você encontra freelancers especializados, prontos para
-              transformar suas ideias em realidade. Com flexibilidade, agilidade
-              e foco na qualidade, nossos profissionais estão preparados para
-              atender às suas necessidades, seja em projetos pontuais ou
-              demandas contínuas. Ganhe tempo, reduza custos e tenha acesso aos
-              melhores talentos — tudo em um só lugar.
+            <p class="hero-description">
+                Encontre projetos adequados ao seu nível, construa seu portfólio e ganhe experiência real trabalhando com empresas que valorizam novos talentos.
             </p>
-          </div>
-          <div class="buttons">
-            <a href="/auth?type=login" id="trabalhar">
-              Você quer trabalhar ?
-              <iconify-icon
-                icon="pixelarticons:arrow-right"
-                width="24"
-              ></iconify-icon>
-            </a>
-            <a href="/auth?type=login" id="contract"
-              >Eu Quero Contratar Um Freelancer</a
-            >
-          </div>
-        </div>
-      </section>
+            
+            <div class="hero-buttons">
+                <a href="/auth?type=login" class="btn-primary">Sou Programador</a>
+                <a href="/auth?type=login" class="btn-secondary">Quero Contratar</a>
+            </div>
+
+            <div class="scroll-arrow">
+                <iconify-icon icon="ph:arrow-down-light"></iconify-icon>
+            </div>
+        </section>
+
+        <section id="features" class="features-section">
+            <div class="features-header">
+                <h2>Tudo que você precisa para <span class="destac-text">começar</span></h2>
+                <p>Uma plataforma pensada especialmente para quem está começando na programação</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <div class="icon-box"><iconify-icon icon="ph:briefcase-duotone"></iconify-icon></div>
+                </div>
+                <div class="card">
+                    <div class="icon-box"><iconify-icon icon="ph:chat-centered-text-duotone"></iconify-icon></div>
+                </div>
+                <div class="card">
+                    <div class="icon-box"><iconify-icon icon="ph:code-bold"></iconify-icon></div>
+                </div>
+                <div class="card">
+                    <div class="icon-box"><iconify-icon icon="ph:star-duotone"></iconify-icon></div>
+                </div>
+                <div class="card">
+                    <div class="icon-box"><iconify-icon icon="ph:heart-duotone"></iconify-icon></div>
+                </div>
+                <div class="card">
+                    <div class="icon-box"><iconify-icon icon="ph:shield-check-duotone"></iconify-icon></div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <script
-      src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"
-      defer
-    ></script>
-  </body>
+    <footer class="footer">
+    <div class="footer-glow"></div>
+
+    <div class="footer-container">
+        <div class="footer-brand">
+            <img src="/images/logo.png" alt="CTD Logo">
+            <p>
+                Conectamos desenvolvedores iniciantes a oportunidades reais,
+                ajudando a construir experiência e portfólio.
+            </p>
+        </div>
+
+        <div class="footer-links">
+            <h4>Plataforma</h4>
+            <ul>
+                <li><a href="#">Sobre</a></li>
+                <li><a href="#">Projetos</a></li>
+                <li><a href="#">Como funciona</a></li>
+                <li><a href="#">Contato</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-links">
+            <h4>Para Devs</h4>
+            <ul>
+                <li><a href="#">Começar</a></li>
+                <li><a href="#">Portfólio</a></li>
+                <li><a href="#">Desafios</a></li>
+                <li><a href="#">Comunidade</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-links">
+            <h4>Empresa</h4>
+            <ul>
+                <li><a href="#">Contratar</a></li>
+                <li><a href="#">Planos</a></li>
+                <li><a href="#">Parcerias</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <span>© 2025 CTD. Todos os direitos reservados.</span>
+
+        <div class="footer-socials">
+            <a href="#"><iconify-icon icon="mdi:github"></iconify-icon></a>
+            <a href="#"><iconify-icon icon="mdi:linkedin"></iconify-icon></a>
+            <a href="#"><iconify-icon icon="mdi:instagram"></iconify-icon></a>
+        </div>
+    </div>
+</footer>
+
+
+
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js" defer></script>
+</body>
 </html>

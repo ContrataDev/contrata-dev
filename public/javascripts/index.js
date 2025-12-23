@@ -37,3 +37,4 @@ document.querySelectorAll(".nav-link").forEach((link) => {
 		document.getElementById(page).classList.remove("hidden");
 	});
 });
+
